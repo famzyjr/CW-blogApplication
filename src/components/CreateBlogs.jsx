@@ -31,7 +31,7 @@ const CreateBlogs = () => {
         setisPending(false);
         console.log(data);
 
-        navigate("/");
+        navigate("/Home");
       })
       .catch((err) => {
         console.error(err);

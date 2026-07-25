@@ -9,14 +9,12 @@ function App() {
     <BrowserRouter>
       <Navbar />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/Home" element={<Home />} />
+
+        <Route path="/CreateBlogs" element={<CreateBlogs />} />
+
+        <Route path="/blogs/:id" element={<Details />} />
       </Routes>
-       <Routes>
-        <Route path="/CreateBlogs" element={<CreateBlogs/>} />
-      </Routes>
-      <Routes>
-            <Route path="/blogs/:id" element={<Details/>}/>
-          </Routes>
     </BrowserRouter>
   );
 }
