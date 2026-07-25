@@ -30,8 +30,8 @@ const CreateBlogs = () => {
         console.log("New blog added:", data);
         setisPending(false);
         console.log(data);
-
-        navigate("/Home");
+       alert('name')
+        navigate("/");
       })
       .catch((err) => {
         console.error(err);
