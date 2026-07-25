@@ -3,13 +3,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 const CreateBlogs = () => {
   const [title, setTitle] = useState("");
-  const [Content, setContent] = useState("");
-  const [authorName, setAuthorName] = useState("");
+  const [content, setcontent] = useState("");
+  const [author_name, setauthor_name] = useState("");
   const [isPending, setisPending] = useState(false);
- const navigate = useNavigate();
+  const navigate = useNavigate();
   const handleSubmit = (e) => {
-    e.preventdefault();
-    const blog = { title, authorName, Content };
+    e.preventDefault();
+    const blog = { title, author_name, content };
     setisPending(true);
     const endpoint = "https://cw-blog-backend.onrender.com";
     fetch(`${endpoint}/api/blogs`, {
@@ -23,14 +23,14 @@ const CreateBlogs = () => {
         if (!res.ok) {
           throw new Error("Failed to create blog");
         } else {
-          return response.json();
+          return res.json();
         }
       })
       .then((data) => {
         console.log("New blog added:", data);
         setisPending(false);
         console.log(data);
-        
+
         navigate("/");
       })
       .catch((err) => {
@@ -53,20 +53,19 @@ const CreateBlogs = () => {
           <label>Blog author</label>
           <input
             type="text"
-            value={authorName}
+            value={author_name}
             required
-            onChange={(e) => setAuthorName(e.target.value)}
+            onChange={(e) => setauthor_name(e.target.value)}
           />
           <label>Blog body:</label>
           <textarea
             required
-            value={Content}
-            onChange={(e) => setContent(e.target.value)}
-            
+            value={content}
+            onChange={(e) => setcontent(e.target.value)}
           ></textarea>
-          
-            {!isPending && <button>Add blog</button>}
-        {isPending && <button disabled>adding blog ...</button>}
+
+          {!isPending && <button>Add blog</button>}
+          {isPending && <button disabled>adding blog ...</button>}
         </form>
       </div>
     </>

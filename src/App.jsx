@@ -3,6 +3,7 @@ import "./App.css";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import CreateBlogs from "./components/CreateBlogs";
+import Details from "./Details";
 function App() {
   return (
     <BrowserRouter>
@@ -13,6 +14,9 @@ function App() {
        <Routes>
         <Route path="/CreateBlogs" element={<CreateBlogs/>} />
       </Routes>
+      <Routes>
+            <Route path="/blogs/:id" element={<Details/>}/>
+          </Routes>
     </BrowserRouter>
   );
 }
