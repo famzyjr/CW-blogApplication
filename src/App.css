@@ -355,13 +355,11 @@ hr {
   color: #111;
 }
 
-
 @media (max-width: 1200px) {
   .blog-list {
     grid-template-columns: repeat(2, 1fr);
   }
 }
-
 
 @media (max-width: 768px) {
   .blog-list {
@@ -382,7 +380,6 @@ hr {
     font-size: 1rem;
   }
 }
-
 
 @media (max-width: 480px) {
   .blog-list {
