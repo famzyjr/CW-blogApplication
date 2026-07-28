@@ -43,23 +43,26 @@ const CreateBlogs = () => {
       <div className="create">
         <h1>Add a new blog</h1>
         <form onSubmit={handleSubmit}>
-          <label>Blog title:</label>
+          <label for="blog-title">Blog title:</label>
           <input
             type="text"
             value={title}
+            id="blog-title"
             required
             onChange={(e) => setTitle(e.target.value)}
           />
-          <label>Blog author</label>
+          <label for='blog-author'>Blog author:</label>
           <input
             type="text"
             value={author_name}
             required
+            id="blog-author"
             onChange={(e) => setauthor_name(e.target.value)}
           />
-          <label>Blog body:</label>
+          <label for='blog-content'>Blog body:</label>
           <textarea
             required
+            id='blog-content'
             value={content}
             onChange={(e) => setcontent(e.target.value)}
           ></textarea>
