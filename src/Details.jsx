@@ -1,7 +1,7 @@
 import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import useFetch from '../hooks/useFetch'
-
+import useFetch from '../hooks/useFetch';
+import LoadingState from './components/LoadingState';
 function Details() {
     const {id} = useParams()
      const endpoint = "https://cw-blog-backend.onrender.com";
@@ -22,8 +22,8 @@ function Details() {
   return (
     <div className='blog-preview'>
       {/* <h2> me {id}</h2> */}
-     {ispending && <p>Loading...</p>}
-     {error && <div>{error}</div>}
+     {ispending && <LoadingState />}
+     {error && <div className='errors'>{error}</div>}
       {blogs &&(
         <article>
           <h2>{blogs.title}</h2>

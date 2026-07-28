@@ -8,7 +8,7 @@ const {data:blogs, ispending, error} = useFetch(`${endpoint}/api/blogs`)
   console.log(blogs);
   return (
     <div className="home">
-      {error && <div>{error}</div>}
+      {error && <div className='errors'>{error}</div>}
       {ispending && <div><LoadingState/></div>}
       {/* child component  */}
       {blogs && <BlogList blog={blogs} title="All Blogs!"/>}

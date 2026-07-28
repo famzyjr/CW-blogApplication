@@ -278,11 +278,15 @@ hr {
 
   color: black;
 }
-.loading_state{
+.loading_state,.errors{
 display: flex;
 justify-content: center;
 align-items: center;
 margin-top: 220px;
+}
+.errors{
+font-weight: 900;
+font-size: 1.5rem;
 }
 .blog-list {
   display: grid;
