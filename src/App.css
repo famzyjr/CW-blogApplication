@@ -278,6 +278,12 @@ hr {
 
   color: black;
 }
+.loading_state{
+display: flex;
+justify-content: center;
+align-items: center;
+margin-top: 220px;
+}
 .blog-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
