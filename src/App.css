@@ -278,14 +278,6 @@ hr {
 
   color: black;
 }
-.blog-list {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  justify-content: center;
-  gap: 20px;
-  margin-top: 5%;
-  padding: 0 20px;
-}
 
 .card_con {
   display: grid;
@@ -408,6 +400,7 @@ hr {
     font-size: 0.9rem;
   }
 }
+
 /* Mobile */
 
 @media (max-width: 768px) {
