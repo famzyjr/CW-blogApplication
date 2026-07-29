@@ -15,10 +15,6 @@ const Welcome = () => {
           <Link to="/Home" className="primary-btn">
             Explore Blogs
           </Link>
-
-          <Link to="/Createblogs" className="secondary-btn">
-            Write a Blog
-          </Link>
         </div>
       </div>
 
