@@ -16,7 +16,7 @@ const Welcome = () => {
             Explore Blogs
           </Link>
 
-          <Link to="/Create" className="secondary-btn">
+          <Link to="/Createblogs" className="secondary-btn">
             Write a Blog
           </Link>
         </div>
