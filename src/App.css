@@ -227,6 +227,99 @@ hr {
   color: #111;
 }
 
+.welcome {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+
+.welcome-content {
+  max-width: 700px;
+}
+
+.welcome-content h1 {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  margin-bottom: 1rem;
+}
+
+.welcome-content p {
+  font-size: 1.1rem;
+  color: #555;
+  line-height: 1.8;
+  margin-bottom: 2rem;
+}
+
+.welcome-btns {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.primary-btn,
+.secondary-btn {
+  text-decoration: none;
+  padding: 14px 28px;
+  border-radius: 50px;
+  font-weight: bold;
+  transition: .3s;
+}
+
+.primary-btn {
+  background: #000;
+  color: #fff;
+}
+
+.primary-btn:hover {
+  transform: translateY(-5px);
+}
+
+.secondary-btn {
+  border: 2px solid #000;
+  color: #000;
+}
+
+.secondary-btn:hover {
+  background: #000;
+  color: #fff;
+}
+
+.features {
+  margin-top: 5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2rem;
+  width: min(1100px, 100%);
+}
+
+.feature-card {
+  padding: 2rem;
+  border-radius: 18px;
+  background: #f7f7f7;
+  transition: .3s;
+}
+
+.feature-card:hover {
+  transform: translateY(-10px);
+}
+
+.feature-card h2 {
+  font-size: 2.5rem;
+}
+
+.feature-card h3 {
+  margin: 1rem 0;
+}
+
+.feature-card p {
+  color: #555;
+  line-height: 1.6;
+}
+
 /* Large Desktop */
 @media (min-width: 1400px) {
   .blog-list {
