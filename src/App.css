@@ -10,46 +10,95 @@ body {
   box-sizing: border-box;
   font-family: "Quicksand", sans-serif;
 }
-h2 {
-  color: var(--primary-color);
-}
 nav {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.2rem 2rem;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 2.5em;
 }
 
-ul > :nth-child(2) {
-  background-color: var(--primary-color);
-  padding: 5px;
-  border-radius: 5px;
-  color: var(--text);
+nav h2 {
+  color: var(--primary-color);
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  cursor: pointer;
 }
 
 nav ul {
   display: flex;
-  text-align: center;
-  gap: 20%;
+  align-items: center;
+  gap: 2rem;
+
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-a {
+nav li {
+  list-style: none;
+}
+
+nav a {
   text-decoration: none;
-  text-align: center;
-  width: 120px;
   color: var(--primary-color);
+  font-weight: 600;
+  font-size: 1rem;
+  transition: color 0.3s ease;
 }
 
-h2,
 nav a:hover {
-  cursor: pointer;
+  color: #666;
 }
 
-hr {
-  /* border-bottom: 1px solid #f2f2f2; */
-  margin-top: -40px;
+/* Active page */
+
+.nav-link {
+  position: relative;
 }
 
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+
+  width: 0;
+  height: 2px;
+
+  background: var(--primary-color);
+
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* CTA */
+
+.create-btn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  min-width: 170px;
+  padding: 0.85rem 1.8rem;
+
+  border: 2px solid var(--primary-color);
+  border-radius: 999px;
+
+  transition: all 0.3s ease;
+}
+
+.create-btn:hover {
+  background: var(--primary-color);
+  color: #fff;
+  transform: translateY(-2px);
+}
 .create {
   max-width: 400px;
   margin: 0 auto;
@@ -327,7 +376,7 @@ hr {
 
   width: 100vw;
   height: 100vh;
- 
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -515,5 +564,47 @@ hr {
 
   .welcome-content p {
     font-size: 1rem;
+  }
+}
+@media (max-width: 768px) {
+  nav {
+    padding: 1rem 1.5rem;
+  }
+
+  nav h2 {
+    font-size: 1.7rem;
+  }
+
+  nav ul {
+    gap: 1rem;
+  }
+
+  .create-btn {
+    min-width: 150px;
+    padding: 0.75rem 1.4rem;
+  }
+}
+@media (max-width: 576px) {
+  nav {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  nav h2 {
+    align-self: flex-start;
+  }
+
+  nav ul {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  nav a {
+    font-size: 0.95rem;
+  }
+
+  .create-btn {
+    min-width: 135px;
+    padding: 0.7rem 1rem;
   }
 }
