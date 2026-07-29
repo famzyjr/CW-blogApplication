@@ -13,7 +13,7 @@ function Details() {
     fetch(`${endpoint}/api/blogs/${id}`,{
     method: 'DELETE'
     }).then(()=>{
-      navigate('/');
+      navigate('/Home');
     }) 
 
     }
