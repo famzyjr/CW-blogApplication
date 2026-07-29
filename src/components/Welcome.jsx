@@ -4,7 +4,7 @@ const Welcome = () => {
   return (
     <section className="welcome">
       <div className="welcome-content">
-        <h1>Welcome to BlogApp </h1>
+        <h1>Welcome to IBlog </h1>
 
         <p>
           A place where ideas become stories. Read inspiring blogs, share your
