@@ -96,8 +96,10 @@ hr {
 /* blog preview  */
 .blog-preview {
   padding: 10px 16px;
-  margin: 20px 0;
-  /* background-color: red; */
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ 
   border-bottom: 1px solid #fafafa;
 }
 
