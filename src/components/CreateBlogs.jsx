@@ -90,6 +90,7 @@ const CreateBlogs = () => {
 
           {!isPending && <button>Add blog</button>}
           {isPending && <button disabled>adding blog ...</button>}
+          <Toaster position="bottom-right" />
         </form>
       </div>
     </>

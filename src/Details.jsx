@@ -1,96 +1,126 @@
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast, Toaster } from "react-hot-toast";
+
 import useFetch from "../hooks/useFetch";
 import LoadingState from "./components/LoadingState";
-import { toast, Toaster } from "react-hot-toast";
+
 function Details() {
-  const [IsModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const { id } = useParams();
+  const navigate = useNavigate();
+
   const endpoint = "https://cw-blog-backend.onrender.com";
+
   const {
     data: blogs,
     ispending,
     error,
   } = useFetch(`${endpoint}/api/blogs/${id}`);
 
-  const navigate = useNavigate();
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
 
-  const handleClick = () => {
-    fetch(`${endpoint}/api/blogs/${id}`, {
-      method: "DELETE",
-    }).then(() => {
-      toast.success("🎉 Blog deleted successfully!", {
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleDelete = async () => {
+    try {
+      closeModal();
+
+      const response = await fetch(`${endpoint}/api/blogs/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete blog");
+      }
+
+      toast.success("🗑️ Blog deleted successfully!", {
         style: {
           borderRadius: "10px",
           background: "#333",
           color: "#fff",
         },
       });
+
       setTimeout(() => {
         navigate("/Home");
       }, 2000);
-    });
-  };
-
-  const OpenModal = () => {
-    setIsModalOpen(true);
-    console.log("name");
-  };
-  const CloseModal = () => {
-    setIsModalOpen(false);
-    console.log("name");
+    } catch (err) {
+      toast.error("❌ Failed to delete the blog.", {
+        style: {
+          borderRadius: "10px",
+          background: "#333",
+          color: "#fff",
+        },
+      });
+    }
   };
 
   return (
-    <div className="blog-preview">
-      {/* <h2> me {id}</h2> */}
-      {ispending && <LoadingState />}
-      {error && <div className="errors">{error}</div>}
-      {blogs && (
-        <article>
-          <h2>{blogs.title}</h2>
+    <>
+      <Toaster position="bottom-right" />
 
-          <p>Written by {blogs.author_name}</p>
+      <div className="blog-preview">
+        {ispending && <LoadingState />}
 
-          <div>{blogs.content}</div>
+        {error && <div className="errors">{error}</div>}
 
-          <button onClick={OpenModal}>delete</button>
+        {blogs && (
+          <article>
+            <h2>{blogs.title}</h2>
 
-          {IsModalOpen && (
-            <div className="modal-overlay">
-              <div className="delete-modal">
-                <div className="modal-content">
-                  <h3>Delete Blog?</h3>
+            <p>Written by {blogs.author_name}</p>
 
-                  <p>Are you sure you want to delete this blog post?</p>
+            <div>{blogs.content}</div>
 
-                  <span>This action cannot be undone.</span>
-                </div>
+            <button onClick={openModal}>
+              Delete
+            </button>
+          </article>
+        )}
+      </div>
 
-                <div className="modal-footer">
-                  <button onClick={CloseModal} className="cancel-btn">
-                    Cancel
-                  </button>
+      {isModalOpen && (
+        <div className="modal-overlay">
+          <div className="delete-modal">
 
-                  {!ispending && (
-                    <button onClick={handleClick} className="delete-btn">
-                      Delete
-                    </button>
-                  )}
+            <div className="modal-content">
+              <h3>Delete Blog?</h3>
 
-                  {ispending && (
-                    <button onClick={handleClick} className="delete-btn">
-                      Delete
-                    </button>
-                  )}
-                  <Toaster position="bottom-right" />
-                </div>
-              </div>
+              <p>
+                Are you sure you want to delete this blog post?
+              </p>
+
+              <span>
+                This action cannot be undone.
+              </span>
             </div>
-          )}
-        </article>
+
+            <div className="modal-footer">
+              <button
+                className="cancel-btn"
+                onClick={closeModal}
+              >
+                Cancel
+              </button>
+
+              <button
+                className="delete-btn"
+                onClick={handleDelete}
+              >
+                Delete
+              </button>
+            </div>
+
+          </div>
+        </div>
       )}
-    </div>
+    </>
   );
 }
 

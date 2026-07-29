@@ -17,6 +17,7 @@ function App() {
         <Route path="/CreateBlogs" element={<CreateBlogs />} />
 
         <Route path="/blogs/:id" element={<Details />} />
+        
       </Routes>
     </HashRouter>
   );
