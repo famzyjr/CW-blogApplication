@@ -14,7 +14,6 @@ const CreateBlogs = () => {
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
-
     e.preventDefault();
 
     const blog = { title, author_name, content };
@@ -46,10 +45,12 @@ const CreateBlogs = () => {
             color: "#fff",
           },
         });
-        setTimeout(()=>{
-         navigate("/Home");
-        },2000)
+
+        setTimeout(() => {
+          navigate("/Home");
+        }, 2000);
       })
+
       .catch((err) => {
         console.error(err);
         setisPending(false);
