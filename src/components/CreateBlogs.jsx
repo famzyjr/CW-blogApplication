@@ -46,7 +46,7 @@ const CreateBlogs = () => {
             borderRadius: "10px",
             background: "#333",
             color: "#fff",
-          }
+          },
         });
 
         setTimeout(() => {
@@ -90,7 +90,6 @@ const CreateBlogs = () => {
 
           {!isPending && <button>Add blog</button>}
           {isPending && <button disabled>adding blog ...</button>}
-          <Toaster position="bottom-right" />
         </form>
       </div>
     </>

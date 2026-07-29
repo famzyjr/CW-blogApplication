@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useFetch from "../hooks/useFetch";
 import LoadingState from "./components/LoadingState";
-
+import { toast, Toaster } from "react-hot-toast";
 function Details() {
   const [IsModalOpen, setIsModalOpen] = useState(false);
   const { id } = useParams();
@@ -19,7 +19,16 @@ function Details() {
     fetch(`${endpoint}/api/blogs/${id}`, {
       method: "DELETE",
     }).then(() => {
-      navigate("/Home");
+      toast.success("🎉 Blog deleted successfully!", {
+        style: {
+          borderRadius: "10px",
+          background: "#333",
+          color: "#fff",
+        },
+      });
+      setTimeout(() => {
+        navigate("/Home");
+      }, 2000);
     });
   };
 
@@ -68,11 +77,13 @@ function Details() {
                       Delete
                     </button>
                   )}
-                    {ispending && (
+
+                  {ispending && (
                     <button onClick={handleClick} className="delete-btn">
                       Delete
                     </button>
                   )}
+                  <Toaster position="bottom-right" />
                 </div>
               </div>
             </div>
