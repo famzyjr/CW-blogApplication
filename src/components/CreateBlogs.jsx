@@ -36,14 +36,17 @@ const CreateBlogs = () => {
       })
       .then((data) => {
         console.log("New blog added:", data);
+
         setisPending(false);
+
         console.log(data);
+
         toast.success("🎉 Blog published successfully!", {
           style: {
             borderRadius: "10px",
             background: "#333",
             color: "#fff",
-          },
+          }
         });
 
         setTimeout(() => {
