@@ -5,6 +5,7 @@ import Home from "./components/Home";
 import CreateBlogs from "./pages/CreateBlogs";
 import Welcome from "./pages/Welcome";
 import Details from "./Details";
+import Login from './pages/Login'
 function App() {
   return (
     <HashRouter>
@@ -18,6 +19,8 @@ function App() {
 
         <Route path="/blogs/:id" element={<Details />} />
         
+        
+        <Route path="/Login" element={<Login />} />
       </Routes>
     </HashRouter>
   );
