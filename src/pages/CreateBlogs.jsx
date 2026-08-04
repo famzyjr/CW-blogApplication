@@ -30,6 +30,7 @@ const CreateBlogs = () => {
       .then((res) => {
         if (!res.ok) {
           throw new Error("Failed to create blog");
+       
         } else {
           return res.json();
         }
@@ -56,6 +57,13 @@ const CreateBlogs = () => {
 
       .catch((err) => {
         console.error(err);
+            toast.error("Failed to create blog", {
+          style: {
+            borderRadius: "10px",
+            background: "#333",
+            color: "#fff",
+          },
+        });
         setisPending(false);
       });
   };
