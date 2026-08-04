@@ -2,8 +2,8 @@ import { HashRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
-import CreateBlogs from "./components/CreateBlogs";
-import Welcome from "./components/Welcome";
+import CreateBlogs from "./pages/CreateBlogs";
+import Welcome from "./pages/Welcome";
 import Details from "./Details";
 function App() {
   return (
