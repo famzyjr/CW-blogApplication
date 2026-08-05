@@ -2,6 +2,9 @@ import React from "react";
 import { useState } from "react";
 import { toast, Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import Markdown from "react-markdown";
+import MDEditor from "@uiw/react-md-editor";
+// import { MarkdownEditor } from "./editor/markdown-editor";
 const CreateBlogs = () => {
   const [title, setTitle] = useState("");
 
@@ -30,7 +33,6 @@ const CreateBlogs = () => {
       .then((res) => {
         if (!res.ok) {
           throw new Error("Failed to create blog");
-       
         } else {
           return res.json();
         }
@@ -57,7 +59,7 @@ const CreateBlogs = () => {
 
       .catch((err) => {
         console.error(err);
-            toast.error("Failed to create blog", {
+        toast.error("Failed to create blog", {
           style: {
             borderRadius: "10px",
             background: "#333",
@@ -69,38 +71,106 @@ const CreateBlogs = () => {
   };
   return (
     <>
-      <div className="create">
-        <h1>Add a new blog</h1>
-        <form onSubmit={handleSubmit}>
-          <label for="blog-title">Blog title:</label>
-          <input
-            type="text"
-            value={title}
-            id="blog-title"
-            required
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          <label for="blog-author">Blog author:</label>
-          <input
-            type="text"
-            value={author_name}
-            required
-            id="blog-author"
-            onChange={(e) => setauthor_name(e.target.value)}
-          />
-          <label for="blog-content">Blog body:</label>
-          <textarea
-            required
-            id="blog-content"
-            value={content}
-            onChange={(e) => setcontent(e.target.value)}
-          ></textarea>
+   
+  
+    <div className="min-h-screen bg-gray-50 py-12 px-4">
+      <div className="mx-auto max-w-5xl rounded-3xl bg-white p-8 shadow-xl">
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold text-gray-900">
+            Create New Blog
+          </h1>
+          <p className="mt-2 text-gray-500">
+            Share your ideas with the world using Markdown.
+          </p>
+        </div>
 
-          {!isPending && <button>Add blog</button>}
-          {isPending && <button disabled>adding blog ...</button>}
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Blog Title */}
+          <div>
+            <label
+              htmlFor="blog-title"
+              className="mb-2 block text-sm font-semibold text-gray-700"
+            >
+              Blog Title
+            </label>
+
+            <input
+              type="text"
+              value={title}
+              id="blog-title"
+              required
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Enter blog title..."
+              className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 outline-none transition-all duration-300 focus:border-black focus:ring-2 focus:ring-black/10"
+            />
+          </div>
+
+          {/* Author */}
+          <div>
+            <label
+              htmlFor="blog-author"
+              className="mb-2 block text-sm font-semibold text-gray-700"
+            >
+              Author
+            </label>
+
+            <input
+              type="text"
+              value={author_name}
+              required
+              id="blog-author"
+              onChange={(e) => setauthor_name(e.target.value)}
+              placeholder="Your name..."
+              className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 outline-none transition-all duration-300 focus:border-black focus:ring-2 focus:ring-black/10"
+            />
+          </div>
+
+          {/* Markdown Editor */}
+          <div>
+            <label
+              htmlFor="blog-content"
+              className="mb-2 block text-sm font-semibold text-gray-700"
+            >
+              Blog Content
+            </label>
+
+            <div
+              data-color-mode="light"
+              className="overflow-hidden rounded-2xl border border-gray-200 shadow-sm"
+            >
+              <MDEditor
+                value={content}
+                onChange={setcontent}
+                height={600}
+                preview="live"
+              />
+            </div>
+          </div>
+
+          {/* Submit Button */}
+          <div className="flex justify-end">
+            {!isPending ? (
+              <button
+                className="rounded-xl bg-black px-8 py-3 font-semibold text-white transition-all duration-300 hover:bg-gray-800 active:scale-95"
+              >
+                Publish Blog
+              </button>
+            ) : (
+              <button
+                disabled
+                className="cursor-not-allowed rounded-xl bg-gray-400 px-8 py-3 font-semibold text-white"
+              >
+                Publishing...
+              </button>
+            )}
+          </div>
+
           <Toaster position="bottom-right" />
         </form>
       </div>
+    </div>
+  
+);
     </>
   );
 };

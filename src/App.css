@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap");
+@import '../node_modules/@syncfusion/ej2-tailwind3-theme/styles/rich-text-editor/index.css';
 * {
   --primary-color: #000;
   --text: #fff;
@@ -99,42 +100,39 @@ nav a:hover {
   color: #fff;
   transform: translateY(-2px);
 }
-.create {
-  max-width: 400px;
-  margin: 0 auto;
-  text-align: center;
+
+.w-md-editor {
+  border-radius: 16px !important;
+  overflow: hidden;
+  border: none !important;
+  box-shadow: none !important;
 }
 
-.create label {
-  text-align: left;
-  display: block;
+.w-md-editor-toolbar {
+  padding: 12px !important;
+  border-bottom: 1px solid #e5e7eb !important;
 }
 
-.create h2 {
-  font-size: 20px;
-  color: var(--primary-color);
-  margin-bottom: 30px;
+.w-md-editor-content {
+  font-size: 16px;
 }
 
-.create input,
-.create textarea,
-.create select {
-  width: 100%;
-  padding: 6px 10px;
-  margin: 10px 0;
-  border: 1px solid #ddd;
-  box-sizing: border-box;
-  display: block;
+.w-md-editor-text,
+.w-md-editor-preview {
+  padding: 20px !important;
 }
 
-.create button {
-  background: var(--primary-color);
-  color: #fff;
-  border: 0;
-  padding: 8px;
-  border-radius: 8px;
-  cursor: pointer;
+.w-md-editor-text textarea {
+  font-size: 16px !important;
+  line-height: 1.8 !important;
 }
+
+.wmde-markdown {
+  font-size: 16px !important;
+  line-height: 1.8 !important;
+}
+
+
 
 .content {
   max-width: 600px;
