@@ -141,7 +141,7 @@ const CreateBlogs = () => {
               <MDEditor
                 value={content}
                 onChange={setcontent}
-                height={600}
+                height={300}
                 preview="live"
               />
             </div>
