@@ -201,7 +201,7 @@ function Details() {
                       value={content}
                       onChange={(value) => setContent(value || "")}
                       height={450}
-                      preview="live"
+                      preview="edit"
                       previewOptions={{
                         remarkPlugins: [remarkGfm],
                       }}
