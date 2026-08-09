@@ -231,6 +231,29 @@ function Details() {
               )}
             </div>
 
+            {isModalOpen && (
+              <div className="modal-overlay">
+                <div className="delete-modal">
+                  <div className="modal-content">
+                    <h3>Delete Blog?</h3>
+
+                    <p>Are you sure you want to delete this blog post?</p>
+
+                    <span>This action cannot be undone.</span>
+                    <div className="modal-footer">
+                      <button className="cancel-btn" onClick={closeModal}>
+                        Cancel
+                      </button>
+
+                      <button className="delete-btn" onClick={handleDelete}>
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {!isEdit && (
               <div className="p-8">
                 <div
