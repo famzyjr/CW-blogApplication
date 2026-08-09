@@ -53,7 +53,7 @@ const CreateBlogs = () => {
         });
 
         setTimeout(() => {
-          navigate("/Home");
+          navigate("/Blogs");
         }, 2000);
       })
 

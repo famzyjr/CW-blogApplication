@@ -12,7 +12,7 @@ const Welcome = () => {
         </p>
 
         <div className="welcome-btns">
-          <Link to="/Home" className="primary-btn">
+          <Link to="/Blogs" className="primary-btn">
             Explore Blogs
           </Link>
         </div>

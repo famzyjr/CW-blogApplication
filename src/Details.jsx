@@ -52,7 +52,7 @@ function Details() {
       });
 
       setTimeout(() => {
-        navigate("/Home");
+        navigate("/Blogs");
       }, 2000);
     } catch (err) {
       toast.error("❌ Failed to delete the blog.", {
@@ -108,7 +108,7 @@ function Details() {
         setIsEdit(false);
 
         setTimeout(() => {
-          navigate("/Home");
+          navigate("/Blogs");
         }, 1500);
       })
       .catch((err) => {
