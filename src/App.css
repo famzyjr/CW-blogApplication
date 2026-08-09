@@ -102,34 +102,29 @@ nav a:hover {
 }
 
 .w-md-editor {
-  border-radius: 16px !important;
+  border-radius: 18px !important;
   overflow: hidden;
-  border: none !important;
-  box-shadow: none !important;
+  border: 1px solid #e5e7eb !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 }
 
 .w-md-editor-toolbar {
-  padding: 12px !important;
+  background: #fff !important;
   border-bottom: 1px solid #e5e7eb !important;
+  padding: 10px;
 }
 
-.w-md-editor-content {
-  font-size: 16px;
+.w-md-editor-text-textarea,
+.w-md-editor-text-input,
+.w-md-editor-text {
+  font-size: 18px !important;
+  line-height: 1.9 !important;
+  padding: 24px !important;
 }
 
-.w-md-editor-text,
-.w-md-editor-preview {
-  padding: 20px !important;
-}
-
-.w-md-editor-text textarea {
-  font-size: 16px !important;
-  line-height: 1.8 !important;
-}
-
-.wmde-markdown {
-  font-size: 16px !important;
-  line-height: 1.8 !important;
+.w-md-editor-text-pre,
+.w-md-editor-text-input {
+  font-family: Inter, sans-serif !important;
 }
 
 

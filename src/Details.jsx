@@ -196,11 +196,11 @@ function Details() {
                     />
                   </div>
 
-                  <div data-color-mode="light">
+                  <div data-color-mode="light mx-auto max-w-5xl rounded-2xl bg-white shadow-xl border border-gray-200 overflow-hidden">
                     <MDEditor
                       value={content}
                       onChange={(value) => setContent(value || "")}
-                      height={450}
+                      height={600}
                       preview="edit"
                       previewOptions={{
                         remarkPlugins: [remarkGfm],
