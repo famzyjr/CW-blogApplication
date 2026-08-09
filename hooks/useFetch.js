@@ -11,7 +11,7 @@ const useFetch = (url) => {
       fetch(url, {signal: abortConst.signal})
         .then(res => {
           if (!res.ok) {
-            throw Error("could not fetch data");
+            throw Error("404 blog not found");
           }
           return res.json();
         })
