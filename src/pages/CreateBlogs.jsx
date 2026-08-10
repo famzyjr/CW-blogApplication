@@ -98,6 +98,8 @@ const CreateBlogs = () => {
               type="text"
               value={title}
               id="blog-title"
+              pattern="[A-Za-z],{2,20}"
+              title="The first name must contain letters only"
               required
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Enter blog title..."
