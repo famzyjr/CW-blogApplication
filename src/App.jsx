@@ -13,14 +13,14 @@ function App() {
       <Routes>
            <Route path="/" element={<Welcome/>} />
 
-        <Route path="/Blogs" element={<Home />} />
+        <Route path="/blogs" element={<Home />} />
 
-        <Route path="/CreateBlogs" element={<CreateBlogs />} />
+        <Route path="/createblogs" element={<CreateBlogs />} />
 
         <Route path="/blogs/:id" element={<Details />} />
         
         
-        <Route path="/Login" element={<Login />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </BrowserRouter>
   );
