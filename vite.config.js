@@ -5,5 +5,5 @@ export default defineConfig(({ mode }) => ({
   plugins: [react(), tailwindcss(),],
       
   
-  base: mode === "github" ? "/blogApp/" : "/",
+  base: mode === "github" ? "/CW-blogApplication/" : "/",
 }));
