@@ -4,22 +4,46 @@ const LoginSignUp = () => {
   const [user_name, setUser_Name] = useState("");
   const [user_email, setUser_Email] = useState("");
   const [user_password, setUser_Password] = useState("");
-  const [isSignIn, setIsSignIn] = useState(false);
+  const [isSignIn, setIsSignIn] = useState(true);
+  const [errors, setErrors] = useState({});
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    handelValidation();
 
-    setUser_Name("");
-    setUser_Email("");
-    setUser_Password("");
+    if (Object.keys(errors).length === 0) {
+      console.log("Form is valid");
+      setUser_Name("");
+      setUser_Email("");
+      setUser_Password("");
+    }
+  };
+
+  const handelValidation = () => {
+    const errors = {};
+    if (user_name.trim() === "") {
+      errors.user_name = "username is requried";
+    }
+    if (user_email.trim() === "") {
+      errors.user_email = "Email is requried";
+    }
+    if (user_password.trim() === "") {
+      errors.user_password = "password is requried";
+    } else if (user_password < 6) {
+      errors.user_password = "password must be more than 6 characters";
+    }
+    setErrors(errors);
+    return errors;
   };
 
   const handelSwitch = () => {
     setIsSignIn(true);
+    setErrors({});
   };
 
   const handelSwitchLogin = () => {
     setIsSignIn(false);
+    setErrors({});
   };
 
   return (
@@ -37,9 +61,7 @@ const LoginSignUp = () => {
           </div>
         ) : (
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-900">
-              Welcome Back
-            </h1>
+            <h1 className="text-3xl font-bold text-gray-900">Welcome Back</h1>
 
             <p className="text-gray-500 mt-2">
               Login to continue to your blog.
@@ -64,10 +86,17 @@ const LoginSignUp = () => {
                   type="text"
                   value={user_name}
                   placeholder="John Doe"
-                  onChange={(e) => setUser_Name(e.target.value)}
-                  required
-                  className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-black focus:ring-2 focus:ring-black/10"
+                  onChange={(e) => {
+                    setUser_Name(e.target.value);
+
+                    setErrors({
+                      ...errors,
+                      user_name: "",
+                    });
+                  }}
+                    className={`w-full rounded-xl border ${errors.user_name ? `border-red-700` : 'border-gray-300'}  px-4 py-3 outline-none transition focus:border-black focus:ring-2 focus:ring-black/10`}
                 />
+                {errors.user_name ?  <div className="text-red-700">{errors.user_name}</div> : ''}
               </div>
             )}
 
@@ -84,10 +113,19 @@ const LoginSignUp = () => {
                 type="email"
                 value={user_email}
                 placeholder="you@example.com"
-                onChange={(e) => setUser_Email(e.target.value)}
-                required
-                className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-black focus:ring-2 focus:ring-black/10"
+               onChange={(e) => {
+                    setUser_Email(e.target.value);
+
+                    setErrors({
+                      ...errors,
+                      user_email: "",
+                    });
+                  }}
+                className={`w-full rounded-xl border ${errors.user_email ? `border-red-700` : `border-gray-300`} px-4 py-3 outline-none transition focus:border-black focus:ring-2 focus:ring-black/10`}
               />
+              {errors.user_email && (
+                <div className="text-red-700">{errors.user_email}</div>
+              )}
             </div>
 
             <div>
@@ -103,10 +141,19 @@ const LoginSignUp = () => {
                 type="password"
                 value={user_password}
                 placeholder="••••••••"
-                onChange={(e) => setUser_Password(e.target.value)}
-                required
-                className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-black focus:ring-2 focus:ring-black/10"
+               onChange={(e) => {
+                    setUser_Password(e.target.value);
+
+                    setErrors({
+                      ...errors,
+                      user_password: "",
+                    });
+                  }}
+                className={`w-full rounded-xl border ${errors.user_password ? `border-red-700` : `border-gray-300`} px-4 py-3 outline-none transition focus:border-black focus:ring-2 focus:ring-black/10`}
               />
+              {errors.user_password && (
+                <div className="text-red-700">{errors.user_password}</div>
+              )}
             </div>
 
             <div className="pt-2">
