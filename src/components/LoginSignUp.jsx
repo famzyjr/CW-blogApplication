@@ -29,7 +29,7 @@ const LoginSignUp = () => {
     }
     if (user_password.trim() === "") {
       errors.user_password = "password is requried";
-    } else if (user_password < 6) {
+    } else if (user_password.length < 6) {
       errors.user_password = "password must be more than 6 characters";
     }
     setErrors(errors);
