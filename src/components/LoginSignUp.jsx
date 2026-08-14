@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase/firebaseConfig";
 const LoginSignUp = () => {
   const [user_name, setUser_Name] = useState("");
   const [user_email, setUser_Email] = useState("");
@@ -7,23 +8,33 @@ const LoginSignUp = () => {
   const [isSignIn, setIsSignIn] = useState(true);
   const [errors, setErrors] = useState({});
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    handelValidation();
 
-    if (Object.keys(errors).length === 0) {
-      console.log("Form is valid");
-      setUser_Name("");
+    //  creating new users with email and password
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        user_email,
+        user_password,
+      );
+      console.log("User created:", userCredential.user);
       setUser_Email("");
       setUser_Password("");
+      setErrors({});
+    } catch (error) {
+      console.log("Firebase error:", error);
+      console.log("Firebase error code:", error.code);
+      console.log("Firebase error message:", error.message);
+      handelValidation();
     }
   };
 
   const handelValidation = () => {
     const errors = {};
-    if (user_name.trim() === "") {
-      errors.user_name = "username is requried";
-    }
+    // if (user_name.trim() === "") {
+    //   errors.user_name = "username is requried";
+    // }
     if (user_email.trim() === "") {
       errors.user_email = "Email is requried";
     }
@@ -72,7 +83,7 @@ const LoginSignUp = () => {
         <form onSubmit={handleSubmit} className="space-y-5">
           {/* Added space-y-5 here */}
           <div className="space-y-5">
-            {isSignIn && (
+            {/* {isSignIn && (
               <div>
                 <label
                   htmlFor="user_Name"
@@ -98,7 +109,7 @@ const LoginSignUp = () => {
                 />
                 {errors.user_name ?  <div className="text-red-700">{errors.user_name}</div> : ''}
               </div>
-            )}
+            )} */}
 
             <div>
               <label
@@ -113,14 +124,14 @@ const LoginSignUp = () => {
                 type="email"
                 value={user_email}
                 placeholder="you@example.com"
-               onChange={(e) => {
-                    setUser_Email(e.target.value);
+                onChange={(e) => {
+                  setUser_Email(e.target.value);
 
-                    setErrors({
-                      ...errors,
-                      user_email: "",
-                    });
-                  }}
+                  setErrors({
+                    ...errors,
+                    user_email: "",
+                  });
+                }}
                 className={`w-full rounded-xl border ${errors.user_email ? `border-red-700` : `border-gray-300`} px-4 py-3 outline-none transition focus:border-black focus:ring-2 focus:ring-black/10`}
               />
               {errors.user_email && (
@@ -141,14 +152,14 @@ const LoginSignUp = () => {
                 type="password"
                 value={user_password}
                 placeholder="••••••••"
-               onChange={(e) => {
-                    setUser_Password(e.target.value);
+                onChange={(e) => {
+                  setUser_Password(e.target.value);
 
-                    setErrors({
-                      ...errors,
-                      user_password: "",
-                    });
-                  }}
+                  setErrors({
+                    ...errors,
+                    user_password: "",
+                  });
+                }}
                 className={`w-full rounded-xl border ${errors.user_password ? `border-red-700` : `border-gray-300`} px-4 py-3 outline-none transition focus:border-black focus:ring-2 focus:ring-black/10`}
               />
               {errors.user_password && (
