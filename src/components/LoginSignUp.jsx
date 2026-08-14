@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
+import { useNavigate } from "react-router-dom";
+import { toast,Toaster } from "react-hot-toast";
 const LoginSignUp = () => {
   const [user_name, setUser_Name] = useState("");
   const [user_email, setUser_Email] = useState("");
   const [user_password, setUser_Password] = useState("");
   const [isSignIn, setIsSignIn] = useState(true);
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,10 +21,24 @@ const LoginSignUp = () => {
         user_email,
         user_password,
       );
+        
+       toast.success("🎉 Account created successfully!", {
+          style: {
+            borderRadius: "10px",
+            background: "#333",
+            color: "#fff",
+          },
+        });
+
       console.log("User created:", userCredential.user);
+      setTimeout(() => {
+        navigate("/blogs");
+      }, 2000);
+
       setUser_Email("");
       setUser_Password("");
       setErrors({});
+      
     } catch (error) {
       console.log("Firebase error:", error);
       console.log("Firebase error code:", error.code);
@@ -176,6 +193,7 @@ const LoginSignUp = () => {
               </button>
             </div>
           </div>
+           <Toaster position="bottom-right" />
         </form>
 
         {isSignIn ? (
