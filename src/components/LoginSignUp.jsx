@@ -3,9 +3,6 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
 import { useNavigate } from "react-router-dom";
 import { toast, Toaster } from "react-hot-toast";
-import { Icon } from "react-icons-kit";
-import { eyeOff } from "react-icons-kit/feather/eyeOff";
-import { eye } from "react-icons-kit/feather/eye";
 
 const LoginSignUp = () => {
   const [user_name, setUser_Name] = useState("");
@@ -14,7 +11,6 @@ const LoginSignUp = () => {
   const [isSignIn, setIsSignIn] = useState(true);
   const [errors, setErrors] = useState({});
   const [type, setType] = useState("password");
-  const [icon, setIcon] = useState(eyeOff);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -45,6 +41,7 @@ const LoginSignUp = () => {
       setUser_Password("");
       setErrors({});
     } catch (error) {
+      
       console.log("Firebase error:", error);
       console.log("Firebase error code:", error.code);
       console.log("Firebase error message:", error.message);
@@ -72,11 +69,23 @@ const LoginSignUp = () => {
   const handelSwitch = () => {
     setIsSignIn(true);
     setErrors({});
+    setUser_Email("");
+    setUser_Password("");
   };
 
   const handelSwitchLogin = () => {
     setIsSignIn(false);
     setErrors({});
+    setUser_Email("");
+    setUser_Password("");
+  };
+
+  const handleToggle = () => {
+    if (type === "password") {
+      setType("text");
+    } else {
+      setType("password");
+    }
   };
 
   return (
@@ -172,6 +181,7 @@ const LoginSignUp = () => {
               <input
                 id="user_Password"
                 value={user_password}
+                type={type}
                 placeholder="••••••••"
                 onChange={(e) => {
                   setUser_Password(e.target.value);
@@ -186,6 +196,17 @@ const LoginSignUp = () => {
               {errors.user_password && (
                 <div className="text-red-700">{errors.user_password}</div>
               )}
+              <div className="flex items-center  mt-3" onClick={handleToggle}>
+                <label className="flex items-center gap-2 text-sm text-gray-500 cursor-pointer select-none">
+                  <span className="hover:text-gray-800 transition-colors">
+                    Show password
+                  </span>
+                  <input
+                    type="checkbox"
+                    className="w-4 h-4 rounded border-gray-300 text-black focus:ring-black cursor-pointer"
+                  />
+                </label>
+              </div>
             </div>
 
             <div className="pt-2">
