@@ -166,7 +166,7 @@ const LoginSignUp = () => {
 
               <input
                 id="user_Password"
-                type="password"
+              
                 value={user_password}
                 placeholder="••••••••"
                 onChange={(e) => {
