@@ -2,13 +2,19 @@ import React, { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
 import { useNavigate } from "react-router-dom";
-import { toast,Toaster } from "react-hot-toast";
+import { toast, Toaster } from "react-hot-toast";
+import { Icon } from "react-icons-kit";
+import { eyeOff } from "react-icons-kit/feather/eyeOff";
+import { eye } from "react-icons-kit/feather/eye";
+
 const LoginSignUp = () => {
   const [user_name, setUser_Name] = useState("");
   const [user_email, setUser_Email] = useState("");
   const [user_password, setUser_Password] = useState("");
   const [isSignIn, setIsSignIn] = useState(true);
   const [errors, setErrors] = useState({});
+  const [type, setType] = useState("password");
+  const [icon, setIcon] = useState(eyeOff);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -21,14 +27,14 @@ const LoginSignUp = () => {
         user_email,
         user_password,
       );
-        
-       toast.success("🎉 Account created successfully!", {
-          style: {
-            borderRadius: "10px",
-            background: "#333",
-            color: "#fff",
-          },
-        });
+
+      toast.success("🎉 Account created successfully!", {
+        style: {
+          borderRadius: "10px",
+          background: "#333",
+          color: "#fff",
+        },
+      });
 
       console.log("User created:", userCredential.user);
       setTimeout(() => {
@@ -38,7 +44,6 @@ const LoginSignUp = () => {
       setUser_Email("");
       setUser_Password("");
       setErrors({});
-      
     } catch (error) {
       console.log("Firebase error:", error);
       console.log("Firebase error code:", error.code);
@@ -166,7 +171,6 @@ const LoginSignUp = () => {
 
               <input
                 id="user_Password"
-              
                 value={user_password}
                 placeholder="••••••••"
                 onChange={(e) => {
@@ -193,7 +197,7 @@ const LoginSignUp = () => {
               </button>
             </div>
           </div>
-           <Toaster position="bottom-right" />
+          <Toaster position="bottom-right" />
         </form>
 
         {isSignIn ? (
