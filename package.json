@@ -16,6 +16,7 @@
     "@uiw/react-md-editor": "^4.1.1",
     "firebase": "^12.17.1",
     "install": "^0.13.0",
+    "lucide-react": "^1.31.0",
     "npm": "^11.19.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
