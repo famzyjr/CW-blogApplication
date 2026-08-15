@@ -1,8 +1,22 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { User } from "lucide-react";
-
+import { auth } from "../firebase/firebaseConfig";
+import { signOut } from "firebase/auth";
 const Navbar = () => {
+  
+   const logOut = async(e)=>{
+     e.preventDefault();
+     try{
+     await signOut(auth)
+      .then(()=>{
+        alert('user Signed out')
+      })
+     }catch(error){
+       console.error("Error signing out: ", error.message);
+     }
+    }
+
   return (
     <div className="s">
       <nav>
@@ -20,13 +34,13 @@ const Navbar = () => {
               <Link to="/profile">
                 <span>User Profile</span>
               </Link>
+              
+             <span><Link to="/login">Sign up</Link></span>
 
-             <span><Link to="/Login">Sign up</Link></span>
 
-
-              <Link to="/logout">
-                <span>Log out</span>
-              </Link>
+            
+                <span onClick={logOut}>Log out</span>
+             
             </div>
           </div>
 

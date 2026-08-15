@@ -78,7 +78,7 @@ const LoginSignUp = () => {
       setUser_Password("");
       setErrors({});
     } catch (error) {
-        toast.success("🎉 Login successfully!", {
+        toast.error( error.code, {
         style: {
           borderRadius: "10px",
           background: "#333",
@@ -130,7 +130,7 @@ const LoginSignUp = () => {
       setType("password");
     }
   };
-
+ 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
@@ -266,6 +266,7 @@ const LoginSignUp = () => {
               >
                 Login
               </button>
+         
             </div></div>}
           </div>
           <Toaster position="bottom-right" />
