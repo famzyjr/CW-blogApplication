@@ -54,7 +54,41 @@ nav a {
 nav a:hover {
   color: #666;
 }
+.icon-container {
+  position: relative;
+  display: inline-block;
+}
 
+.icon {
+  border: none;
+  background: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.icon_context {
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  background: #222;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 6px;
+
+  font-size: 12px;
+  white-space: nowrap;
+
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease;
+}
+
+.icon-container:hover .icon_context {
+  opacity: 1;
+  visibility: visible;
+}
 /* Active page */
 
 .nav-link {
