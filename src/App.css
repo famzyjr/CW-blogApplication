@@ -59,38 +59,51 @@ nav a:hover {
   display: inline-block;
 }
 
-.icon {
-  border: none;
-  background: none;
-  font-size: 24px;
+.icon-container {
+  position: relative;
+  display: inline-block;
   cursor: pointer;
 }
 
-.icon_context {
+.profile-menu {
   position: absolute;
-  bottom: -30px;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 45px;
+  right: 0;
 
-  background: #222;
-  color: white;
-  padding: 6px 10px;
-  border-radius: 6px;
+  width: 150px;
+  padding: 12px;
 
-  font-size: 12px;
-  white-space: nowrap;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.2s ease;
+  transform: translateY(-5px);
+
+  transition: all 0.2s ease;
 }
 
-.icon-container:hover .icon_context {
+.icon-container:hover .profile-menu {
   opacity: 1;
   visibility: visible;
+  transform: translateY(0);
 }
-/* Active page */
 
+.profile-menu span {
+  display: block;
+  padding: 8px;
+  color: #222;
+}
+
+.profile-menu span:hover {
+  background: #f2f2f2;
+  border-radius: 6px;
+}
 .nav-link {
   position: relative;
 }
