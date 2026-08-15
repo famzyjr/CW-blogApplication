@@ -1,5 +1,8 @@
 import React, { useState } from "react";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword, signInWithEmailAndPassword,
+  getAuth
+} from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
 import { useNavigate } from "react-router-dom";
 import { toast, Toaster } from "react-hot-toast";
@@ -15,8 +18,9 @@ const LoginSignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+  };
 
-    //  creating new users with email and password
+  const SignIn = async () => {
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
@@ -24,7 +28,7 @@ const LoginSignUp = () => {
         user_password,
       );
 
-      toast.success("🎉 Account created successfully!", {
+      toast.success("🎉 Account created  successfully!", {
         style: {
           borderRadius: "10px",
           background: "#333",
@@ -41,13 +45,52 @@ const LoginSignUp = () => {
       setUser_Password("");
       setErrors({});
     } catch (error) {
-      
+
       console.log("Firebase error:", error);
       console.log("Firebase error code:", error.code);
       console.log("Firebase error message:", error.message);
       handelValidation();
     }
-  };
+  }
+
+  const Login = async () => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        user_email,
+        user_password
+      );
+      // the signed-in user info;
+      const user = userCredential.user;
+      toast.success("🎉 Login successfully!", {
+        style: {
+          borderRadius: "10px",
+          background: "#333",
+          color: "#fff",
+        },
+      });
+
+  
+      setTimeout(() => {
+        navigate("/blogs");
+      }, 2000);
+      setUser_Email("");
+      setUser_Password("");
+      setErrors({});
+    } catch (error) {
+        toast.success("🎉 Login successfully!", {
+        style: {
+          borderRadius: "10px",
+          background: "#333",
+          color: "#fff",
+        },
+      });
+      console.log("Firebase error:", error);
+      console.log("Firebase error code:", error.code);
+      console.log("Firebase error message:", error.message);
+      handelValidation();
+    }
+  }
 
   const handelValidation = () => {
     const errors = {};
@@ -209,14 +252,21 @@ const LoginSignUp = () => {
               </div>
             </div>
 
-            <div className="pt-2">
+            {isSignIn ? <div> <div className="pt-2" onClick={SignIn}>
               <button
                 type="submit"
                 className="w-full rounded-xl bg-black py-3 font-semibold text-white transition hover:bg-gray-800 active:scale-[0.98]"
               >
-                {isSignIn ? "Sign Up" : "Login"}
+                Sign Up
               </button>
-            </div>
+            </div></div> : <div> <div className="pt-2" onClick={Login}>
+              <button
+                type="submit"
+                className="w-full rounded-xl bg-black py-3 font-semibold text-white transition hover:bg-gray-800 active:scale-[0.98]"
+              >
+                Login
+              </button>
+            </div></div>}
           </div>
           <Toaster position="bottom-right" />
         </form>
