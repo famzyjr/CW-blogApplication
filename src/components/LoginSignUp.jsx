@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import {
-  createUserWithEmailAndPassword, signInWithEmailAndPassword,
-  getAuth
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  getAuth,
 } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
 import { useNavigate } from "react-router-dom";
 import { toast, Toaster } from "react-hot-toast";
-
+import { email, z } from "zod";
 const LoginSignUp = () => {
-  const [user_name, setUser_Name] = useState("");
   const [user_email, setUser_Email] = useState("");
   const [user_password, setUser_Password] = useState("");
   const [isSignIn, setIsSignIn] = useState(true);
@@ -18,6 +18,46 @@ const LoginSignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+  };
+
+  const handelValidation = () => {
+    const SignUpSchema = z.object({
+      email: z.string().email(),
+      password: z
+        .string()
+        .min(8, { message: "Password must be at least 8 characters long" })
+        .max(32, { message: "Password cannot exceed 32 characters" })
+        .regex(/[A-Z]/, {
+          message: "Password must contain at least one uppercase letter",
+        })
+        .regex(/[a-z]/, {
+          message: "Password must contain at least one lowercase letter",
+        })
+        .regex(/[0-9]/, {
+          message: "Password must contain at least one number",
+        })
+        .regex(/[^A-Za-z0-9]/, {
+          message: "Password must contain at least one special character",
+        }),
+    });
+
+    const inputResult = SignUpSchema.safeParse({
+      email: user_email,
+      password: user_password,
+    });
+    console.log(inputResult);
+
+    if (!inputResult.success) {
+      const inputErrors = inputResult.error.flatten().fieldErrors;
+      console.log(inputErrors);
+      setErrors({
+        email: inputErrors.email?.[0] || "",
+        password: inputErrors.password?.[0] || "",
+      });
+      return false;
+    }
+    setErrors({});
+    return true
   };
 
   const SignIn = async () => {
@@ -45,20 +85,19 @@ const LoginSignUp = () => {
       setUser_Password("");
       setErrors({});
     } catch (error) {
-
       console.log("Firebase error:", error);
       console.log("Firebase error code:", error.code);
       console.log("Firebase error message:", error.message);
       handelValidation();
     }
-  }
+  };
 
   const Login = async () => {
     try {
       const userCredential = await signInWithEmailAndPassword(
         auth,
         user_email,
-        user_password
+        user_password,
       );
       // the signed-in user info;
       const user = userCredential.user;
@@ -70,7 +109,6 @@ const LoginSignUp = () => {
         },
       });
 
-  
       setTimeout(() => {
         navigate("/blogs");
       }, 2000);
@@ -78,7 +116,7 @@ const LoginSignUp = () => {
       setUser_Password("");
       setErrors({});
     } catch (error) {
-        toast.error( error.code, {
+      toast.error(error.code, {
         style: {
           borderRadius: "10px",
           background: "#333",
@@ -90,23 +128,6 @@ const LoginSignUp = () => {
       console.log("Firebase error message:", error.message);
       handelValidation();
     }
-  }
-
-  const handelValidation = () => {
-    const errors = {};
-    // if (user_name.trim() === "") {
-    //   errors.user_name = "username is requried";
-    // }
-    if (user_email.trim() === "") {
-      errors.user_email = "Email is requried";
-    }
-    if (user_password.trim() === "") {
-      errors.user_password = "password is requried";
-    } else if (user_password.length < 6) {
-      errors.user_password = "password must be more than 6 characters";
-    }
-    setErrors(errors);
-    return errors;
   };
 
   const handelSwitch = () => {
@@ -130,7 +151,7 @@ const LoginSignUp = () => {
       setType("password");
     }
   };
- 
+
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
@@ -157,34 +178,6 @@ const LoginSignUp = () => {
         <form onSubmit={handleSubmit} className="space-y-5">
           {/* Added space-y-5 here */}
           <div className="space-y-5">
-            {/* {isSignIn && (
-              <div>
-                <label
-                  htmlFor="user_Name"
-                  className="block mb-2 text-sm font-medium text-gray-700"
-                >
-                  Name
-                </label>
-
-                <input
-                  id="user_Name"
-                  type="text"
-                  value={user_name}
-                  placeholder="John Doe"
-                  onChange={(e) => {
-                    setUser_Name(e.target.value);
-
-                    setErrors({
-                      ...errors,
-                      user_name: "",
-                    });
-                  }}
-                    className={`w-full rounded-xl border ${errors.user_name ? `border-red-700` : 'border-gray-300'}  px-4 py-3 outline-none transition focus:border-black focus:ring-2 focus:ring-black/10`}
-                />
-                {errors.user_name ?  <div className="text-red-700">{errors.user_name}</div> : ''}
-              </div>
-            )} */}
-
             <div>
               <label
                 htmlFor="user_Email"
@@ -203,13 +196,13 @@ const LoginSignUp = () => {
 
                   setErrors({
                     ...errors,
-                    user_email: "",
+                    email: "",
                   });
                 }}
-                className={`w-full rounded-xl border ${errors.user_email ? `border-red-700` : `border-gray-300`} px-4 py-3 outline-none transition focus:border-black focus:ring-2 focus:ring-black/10`}
+                className={`w-full rounded-xl border ${errors.email ? `border-red-700` : `border-gray-300`} px-4 py-3 outline-none transition focus:border-black focus:ring-2 focus:ring-black/10`}
               />
-              {errors.user_email && (
-                <div className="text-red-700">{errors.user_email}</div>
+              {errors.email && (
+                <div className="text-red-700">{errors.email}</div>
               )}
             </div>
 
@@ -225,19 +218,19 @@ const LoginSignUp = () => {
                 id="user_Password"
                 value={user_password}
                 type={type}
-                placeholder="••••••••"
+                placeholder="password"
                 onChange={(e) => {
                   setUser_Password(e.target.value);
 
                   setErrors({
                     ...errors,
-                    user_password: "",
+                    password: "",
                   });
                 }}
-                className={`w-full rounded-xl border ${errors.user_password ? `border-red-700` : `border-gray-300`} px-4 py-3 outline-none transition focus:border-black focus:ring-2 focus:ring-black/10`}
+                className={`w-full rounded-xl border ${errors.password ? `border-red-700` : `border-gray-300`} px-4 py-3 outline-none transition focus:border-black focus:ring-2 focus:ring-black/10`}
               />
-              {errors.user_password && (
-                <div className="text-red-700">{errors.user_password}</div>
+              {errors.password && (
+                <div className="text-red-700">{errors.password}</div>
               )}
               <div className="flex items-center  mt-3" onClick={handleToggle}>
                 <label className="flex items-center gap-2 text-sm text-gray-500 cursor-pointer select-none">
@@ -252,22 +245,31 @@ const LoginSignUp = () => {
               </div>
             </div>
 
-            {isSignIn ? <div> <div className="pt-2" onClick={SignIn}>
-              <button
-                type="submit"
-                className="w-full rounded-xl bg-black py-3 font-semibold text-white transition hover:bg-gray-800 active:scale-[0.98]"
-              >
-                Sign Up
-              </button>
-            </div></div> : <div> <div className="pt-2" onClick={Login}>
-              <button
-                type="submit"
-                className="w-full rounded-xl bg-black py-3 font-semibold text-white transition hover:bg-gray-800 active:scale-[0.98]"
-              >
-                Login
-              </button>
-         
-            </div></div>}
+            {isSignIn ? (
+              <div>
+                {" "}
+                <div className="pt-2" onClick={SignIn}>
+                  <button
+                    type="submit"
+                    className="w-full rounded-xl bg-black py-3 font-semibold text-white transition hover:bg-gray-800 active:scale-[0.98]"
+                  >
+                    Sign Up
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div>
+                {" "}
+                <div className="pt-2" onClick={Login}>
+                  <button
+                    type="submit"
+                    className="w-full rounded-xl bg-black py-3 font-semibold text-white transition hover:bg-gray-800 active:scale-[0.98]"
+                  >
+                    Login
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
           <Toaster position="bottom-right" />
         </form>
