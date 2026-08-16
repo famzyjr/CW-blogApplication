@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { User } from "lucide-react";
 import { auth } from "../firebase/firebaseConfig";
 import { signOut } from "firebase/auth";
-
+import ProtectedRoute from '../components/ProtectedRoutes';
 const Navbar = () => {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
@@ -41,11 +41,13 @@ const Navbar = () => {
                 <Link to="/login">Sign up</Link>
               </span>
 
-              <Link>
+             <ProtectedRoute>
+                 <Link>
                 <span onClick={() => setShowLogoutModal(true)}>
                   Log out
                 </span>
               </Link>
+             </ProtectedRoute>
             </div>
           </div>
 
