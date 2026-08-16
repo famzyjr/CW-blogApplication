@@ -1,13 +1,20 @@
-import React, { useState } from "react";
+import React, { useState,  useEffect } from "react";
 import { Link } from "react-router-dom";
 import { User } from "lucide-react";
 import { auth } from "../firebase/firebaseConfig";
 import { signOut } from "firebase/auth";
-import ProtectedRoute from '../components/ProtectedRoutes';
+import { onAuthStateChanged } from "firebase/auth";
+import ProtectedRoute from "../components/ProtectedRoutes";
 const Navbar = () => {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
-
+  const [user, setUser] = useState(null);
   const logOut = async (e) => {
+    useEffect(() => {
+      const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+        setUser(currentUser);
+      });
+      return unsubscribe;
+    }, []);
     e.preventDefault();
 
     try {
@@ -37,17 +44,15 @@ const Navbar = () => {
                 <span>User Profile</span>
               </Link>
 
+
+             {user ? (
+               <Link>
+                <span onClick={() => setShowLogoutModal(true)}>Log out</span>
+              </Link>
+             ) : 
               <span>
                 <Link to="/login">Sign up</Link>
-              </span>
-
-             <ProtectedRoute>
-                 <Link>
-                <span onClick={() => setShowLogoutModal(true)}>
-                  Log out
-                </span>
-              </Link>
-             </ProtectedRoute>
+              </span>}
             </div>
           </div>
 
@@ -63,12 +68,9 @@ const Navbar = () => {
       {showLogoutModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
           <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
-            
             {/* Modal Header */}
             <div className="mb-5">
-              <h3 className="text-xl font-semibold text-gray-900">
-                Log out?
-              </h3>
+              <h3 className="text-xl font-semibold text-gray-900">Log out?</h3>
 
               <p className="mt-2 text-sm text-gray-500">
                 Are you sure you want to log out of your account?
