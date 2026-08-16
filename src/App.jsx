@@ -7,6 +7,7 @@ import Welcome from "./pages/Welcome";
 import Details from "./Details";
 import Login from "./pages/Login";
 import ProtectedRoutes from "./components/ProtectedRoutes";
+import Footer from "./components/Footer";
 function App() {
   return (
     <BrowserRouter>
@@ -36,6 +37,7 @@ function App() {
 
         <Route path="/login" element={<Login />} />
       </Routes>
+      <Footer/>
     </BrowserRouter>
   );
 }
