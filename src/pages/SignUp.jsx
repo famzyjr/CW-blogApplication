@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
 import { useNavigate } from "react-router-dom";
-import { toast, Toaster } from "react-hot-toast";
+
 import { z } from "zod";
 
 const SignUp = () => {
@@ -193,7 +193,7 @@ const SignUp = () => {
             </button>
           </div>
 
-          <Toaster position="bottom-right" />
+         
         </form>
 
         <div className="mt-6 text-center text-sm text-gray-500">
