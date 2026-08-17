@@ -1,4 +1,4 @@
-`import React from "react";
+import React from "react";
 import { Link, replace } from "react-router-dom";
 import { User } from "lucide-react";
 import { auth } from "../firebase/firebaseConfig";
@@ -111,4 +111,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-`
