@@ -1,32 +1,32 @@
-import React from "react";
-import { Link } from "react-router-dom";
+`import React from "react";
+import { Link, replace } from "react-router-dom";
 import { User } from "lucide-react";
 import { auth } from "../firebase/firebaseConfig";
 import { signOut } from "firebase/auth";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import ProtectedRoute from "../components/ProtectedRoutes";
 
 const Navbar = () => {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [user, setUser] = useState(null);
-  
-  useEffect(()=>{
-   const unSubscribe = onAuthStateChanged(auth,(currentUser)=>{
-    setUser(currentUser)
-   })
-   return ()=> unSubscribe();
-  },[])
+  const navigate = useNavigate();
+  useEffect(() => {
+    const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+
+      navigate("/");
+    });
+    return () => unSubscribe();
+  }, []);
 
   const SignOut = async (e) => {
     try {
       await signOut(auth).then(() => {
-        alert("user Signed out");
-  setShowLogoutModal(false)
+        setShowLogoutModal(false);
       });
-    } catch (error) {
-     
-    }
+    } catch (error) {}
   };
   const handelSignout = () => {
     SignOut();
@@ -50,16 +50,18 @@ const Navbar = () => {
               </Link>
 
               {user ? (
-               
-               <div onClick={() => setShowLogoutModal(true)}>
+                <div onClick={() => setShowLogoutModal(true)}>
                   <Link>
                     <span>Log out</span>
                   </Link>
                 </div>
               ) : (
-              <div>    <span>
-                  <Link to="/login">Sign up</Link>
-                </span></div>
+                <div>
+                  {" "}
+                  <span>
+                    <Link to="/login">Sign up</Link>
+                  </span>
+                </div>
               )}
             </div>
           </div>
@@ -109,3 +111,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+`

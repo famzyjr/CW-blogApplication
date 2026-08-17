@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
 import { useNavigate } from "react-router-dom";
 import { toast, Toaster } from "react-hot-toast";
 import { z } from "zod";
 
-const Login = () => {
+const SignUp = () => {
   const [user_email, setUser_Email] = useState("");
   const [user_password, setUser_Password] = useState("");
   const [errors, setErrors] = useState({});
@@ -15,21 +15,35 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    LoginUser();
+    SignIn();
   };
 
   const handelValidation = () => {
-    const LoginSchema = z.object({
-      email: z.string().email({
-        message: "Please enter a valid email",
-      }),
-
-      password: z.string().min(1, {
-        message: "Password is required",
-      }),
+    const SignUpSchema = z.object({
+      email: z.string().email(),
+      password: z
+        .string()
+        .min(8, {
+          message: "Password must be at least 8 characters long",
+        })
+        .max(32, {
+          message: "Password cannot exceed 32 characters",
+        })
+        .regex(/[A-Z]/, {
+          message: "Password must contain at least one uppercase letter",
+        })
+        .regex(/[a-z]/, {
+          message: "Password must contain at least one lowercase letter",
+        })
+        .regex(/[0-9]/, {
+          message: "Password must contain at least one number",
+        })
+        .regex(/[^A-Za-z0-9]/, {
+          message: "Password must contain at least one special character",
+        }),
     });
 
-    const inputResult = LoginSchema.safeParse({
+    const inputResult = SignUpSchema.safeParse({
       email: user_email,
       password: user_password,
     });
@@ -53,15 +67,13 @@ const Login = () => {
     return true;
   };
 
-  const LoginUser = async () => {
+  const SignIn = async () => {
     try {
-      const userCredential = await signInWithEmailAndPassword(
+      const userCredential = await createUserWithEmailAndPassword(
         auth,
         user_email,
         user_password,
       );
-
-      const user = userCredential.user;
 
       navigate("/blogs");
 
@@ -89,9 +101,13 @@ const Login = () => {
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Welcome Back</h1>
+          <h1 className="text-3xl font-bold text-gray-900">
+            Create an account
+          </h1>
 
-          <p className="text-gray-500 mt-2">Login to continue to your blog.</p>
+          <p className="text-gray-500 mt-2">
+            Create an account to start sharing your stories.
+          </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
@@ -173,7 +189,7 @@ const Login = () => {
               type="submit"
               className="w-full rounded-xl bg-black py-3 font-semibold text-white transition hover:bg-gray-800 active:scale-[0.98]"
             >
-              Login
+              Sign Up
             </button>
           </div>
 
@@ -181,13 +197,13 @@ const Login = () => {
         </form>
 
         <div className="mt-6 text-center text-sm text-gray-500">
-          Don't have an account?{" "}
+          Already have an account?{" "}
           <button
             type="button"
-            onClick={() => navigate("/signup")}
+            onClick={() => navigate("/login")}
             className="font-semibold text-black hover:underline"
           >
-            Create account
+            Login
           </button>
         </div>
       </div>
@@ -195,4 +211,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUp;

@@ -8,6 +8,7 @@ import Details from "./Details";
 import Login from "./pages/Login";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import Footer from "./components/Footer";
+import SignUp from "./pages/SignUp";
 function App() {
   return (
     <BrowserRouter>
@@ -35,8 +36,10 @@ function App() {
           }
         />
 
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Login />} />   
+        <Route path="/SignUp" element={<SignUp/>}/>
       </Routes>
+   
       <Footer/>
     </BrowserRouter>
   );
