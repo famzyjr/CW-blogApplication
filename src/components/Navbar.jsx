@@ -22,9 +22,10 @@ const Navbar = () => {
     try {
       await signOut(auth).then(() => {
         alert("user Signed out");
+  setShowLogoutModal(false)
       });
     } catch (error) {
-      console.error("Error signing out: ", error.message);
+     
     }
   };
   const handelSignout = () => {
