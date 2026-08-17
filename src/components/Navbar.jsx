@@ -1,22 +1,24 @@
-import React, { useState,  useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { User } from "lucide-react";
 import { auth } from "../firebase/firebaseConfig";
 import { signOut } from "firebase/auth";
+import { useState, useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import ProtectedRoute from "../components/ProtectedRoutes";
+
 const Navbar = () => {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [user, setUser] = useState(null);
-  const logOut = async (e) => {
-    useEffect(() => {
-      const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-        setUser(currentUser);
-      });
-      return unsubscribe;
-    }, []);
-    e.preventDefault();
+  
+  useEffect(()=>{
+   const unSubscribe = onAuthStateChanged(auth,(currentUser)=>{
+    setUser(currentUser)
+   })
+   return ()=> unSubscribe();
+  },[])
 
+  const SignOut = async (e) => {
     try {
       await signOut(auth).then(() => {
         alert("user Signed out");
@@ -25,7 +27,9 @@ const Navbar = () => {
       console.error("Error signing out: ", error.message);
     }
   };
-
+  const handelSignout = () => {
+    SignOut();
+  };
   return (
     <div className="s">
       <nav>
@@ -44,15 +48,18 @@ const Navbar = () => {
                 <span>User Profile</span>
               </Link>
 
-
-             {user ? (
-               <Link>
-                <span onClick={() => setShowLogoutModal(true)}>Log out</span>
-              </Link>
-             ) : 
-              <span>
-                <Link to="/login">Sign up</Link>
-              </span>}
+              {user ? (
+               
+               <div onClick={() => setShowLogoutModal(true)}>
+                  <Link>
+                    <span>Log out</span>
+                  </Link>
+                </div>
+              ) : (
+              <div>    <span>
+                  <Link to="/login">Sign up</Link>
+                </span></div>
+              )}
             </div>
           </div>
 
@@ -87,10 +94,7 @@ const Navbar = () => {
               </button>
 
               <button
-                onClick={(e) => {
-                  logOut(e);
-                  setShowLogoutModal(false);
-                }}
+                onClick={handelSignout}
                 className="rounded-lg bg-black px-4 py-2 text-sm font-medium text-white transition hover:bg-gray-800"
               >
                 Log out
