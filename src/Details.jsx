@@ -5,6 +5,7 @@ import MDEditor from "@uiw/react-md-editor";
 import useFetch from "../hooks/useFetch";
 import LoadingState from "./components/LoadingState";
 import remarkGfm from "remark-gfm";
+import DetailsSkeleton from "./components/Skeletons/DetailsSkeleton";
 function Details() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
@@ -130,7 +131,7 @@ function Details() {
       <Toaster position="bottom-right" />
 
       <div className="blog-preview">
-        {ispending && <LoadingState />}
+        {ispending && <DetailsSkeleton />}
 
         {error && <div className="errors">{error}</div>}
         {blogs && (

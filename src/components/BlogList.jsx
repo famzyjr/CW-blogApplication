@@ -5,7 +5,9 @@ import {
   FiBookmark,
   FiClock,
 } from "react-icons/fi";
-import BlogSkeleton from '../components/BlogSkeleton'
+
+
+import BlogSkeleton from '../components/Skeletons/BlogSkeleton'
 const BlogList = ({ blog, title, loading }) => {
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
