@@ -1,7 +1,8 @@
 import React from "react";
 import BlogList from "./BlogList";
 import useFetch from "../../hooks/useFetch";
-
+import {MarkdownHooks} from 'react-markdown'
+import rehypeStarryNight from 'rehype-starry-night'
 const endpoint = "https://cw-blog-backend.onrender.com";
 
 const Home = () => {
@@ -18,6 +19,7 @@ const Home = () => {
         title="All Blogs!"
         loading={ispending}
       />
+     
     </div>
   );
 };

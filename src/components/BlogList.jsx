@@ -5,10 +5,26 @@ import {
   FiBookmark,
   FiClock,
 } from "react-icons/fi";
+import { useEffect, useState } from "react";
+import BlogSkeleton from "../components/Skeletons/BlogSkeleton";
 
-
-import BlogSkeleton from '../components/Skeletons/BlogSkeleton'
 const BlogList = ({ blog, title, loading }) => {
+
+  const handleBookmark=(blog)=>{
+   const Saved = localStorage.getItem('Bookmarks');
+
+   const bookmarks = Saved ? JSON.parse(Saved): [];
+   const alreadyBookmarked = bookmarks.some(
+     (item)=> item.id === blog.id
+   );
+   if(!alreadyBookmarked){
+    localStorage.setItem(
+      'Bookmarks',
+      JSON.stringify([...bookmarks,blog.id])
+    );
+   }
+  }
+
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       {/* Heading */}
@@ -32,23 +48,23 @@ const BlogList = ({ blog, title, loading }) => {
           {blog.map((blogs) => {
             const readingTime = Math.max(
               1,
-              Math.ceil(blogs.content.split(" ").length / 200)
+              Math.ceil(blogs.content.split(" ").length / 200),
             );
 
             return (
               <article
                 key={blogs.id}
-                className="flex flex-col h-full min-h-[380px] rounded-3xl border border-gray-200 bg-white p-5 sm:p-6 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
+                className="flex flex-col h-full min-h-95 rounded-3xl border border-gray-200 bg-white p-5 sm:p-6 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
               >
                 {/* Author */}
                 <div className="flex items-center gap-3">
-                  <div className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-[#000] text-white font-semibold text-lg">
+                  <div className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-black text-white font-semibold text-lg">
                     {blogs.author_name.charAt(0).toUpperCase()}
                   </div>
 
                   <div>
                     <h4 className="font-semibold text-gray-900 capitalize text-sm sm:text-base">
-                      {blogs.author_name}
+                      {blogs.author_name}  {console.log(blogs.author_name)}
                     </h4>
 
                     <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-500 mt-1">
@@ -81,7 +97,7 @@ const BlogList = ({ blog, title, loading }) => {
                       <span className="text-sm">12</span>
                     </button>
 
-                    <button className="hover:text-black transition">
+                    <button className="hover:text-black transition" onClick={()=> handleBookmark} >
                       <FiBookmark />
                     </button>
                   </div>
@@ -93,6 +109,8 @@ const BlogList = ({ blog, title, loading }) => {
                     Read More
                   </Link>
                 </div>
+              
+             
               </article>
             );
           })}
