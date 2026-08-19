@@ -15,8 +15,6 @@ const Navbar = () => {
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-
-      navigate("/");
     });
     return () => unSubscribe();
   }, []);
@@ -30,6 +28,7 @@ const Navbar = () => {
   };
   const handelSignout = () => {
     SignOut();
+       navigate("/");
   };
   return (
     <div className="s">
@@ -41,7 +40,7 @@ const Navbar = () => {
         <ul>
           <Link to="/blogs">Blogs</Link>
 
-          <div className="icon-container">
+          <div className="icon-container z-50">
             <User className="icon" size={35} />
 
             <div className="profile-menu">
