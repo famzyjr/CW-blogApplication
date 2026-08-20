@@ -13,6 +13,7 @@
     "@syncfusion/ej2-react-richtexteditor": "^34.2.2",
     "@syncfusion/ej2-tailwind3-theme": "^34.2.2",
     "@tailwindcss/vite": "^4.3.3",
+    "@uiw/react-markdown-editor": "^6.1.4",
     "@uiw/react-md-editor": "^4.1.1",
     "firebase": "^12.17.1",
     "install": "^0.13.0",
