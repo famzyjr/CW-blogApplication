@@ -12,33 +12,24 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    LoginUser();
-  };
+  const LoginSchema = z.object({
+    email: z.string().email({
+      message: "Please enter a valid email",
+    }),
+
+    password: z.string().min(1, {
+      message: "Password is required",
+    }),
+  });
 
   const handelValidation = () => {
-    const LoginSchema = z.object({
-      email: z.string().email({
-        message: "Please enter a valid email",
-      }),
-
-      password: z.string().min(1, {
-        message: "Password is required",
-      }),
-    });
-
     const inputResult = LoginSchema.safeParse({
       email: user_email,
       password: user_password,
     });
 
-    console.log(inputResult);
-
     if (!inputResult.success) {
       const inputErrors = inputResult.error.flatten().fieldErrors;
-
-      console.log(inputErrors);
 
       setErrors({
         email: inputErrors.email?.[0] || "",
@@ -52,15 +43,30 @@ const Login = () => {
     return true;
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Validate before sending request to Firebase
+    const isValid = handelValidation();
+
+    if (!isValid) {
+      return;
+    }
+
+    await LoginUser();
+  };
+
   const LoginUser = async () => {
     try {
       const userCredential = await signInWithEmailAndPassword(
         auth,
         user_email,
-        user_password,
+        user_password
       );
 
       const user = userCredential.user;
+
+      console.log("Logged in user:", user);
 
       navigate("/blogs");
 
@@ -72,28 +78,43 @@ const Login = () => {
       console.log("Firebase error code:", error.code);
       console.log("Firebase error message:", error.message);
 
-      handelValidation();
+      setErrors({
+        email: "",
+        password: "Incorrect email or password.",
+      });
     }
   };
 
   const handleToggle = () => {
-    if (type === "password") {
-      setType("text");
-    } else {
-      setType("password");
-    }
+    setType((currentType) =>
+      currentType === "password" ? "text" : "password"
+    );
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+    <main className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Welcome Back</h1>
+        {/* Header */}
+        <header className="text-center mb-8">
+          <h1
+            id="login-heading"
+            className="text-3xl font-bold text-gray-900"
+          >
+            Welcome Back
+          </h1>
 
-          <p className="text-gray-500 mt-2">Login to continue to your blog.</p>
-        </div>
+          <p className="text-gray-500 mt-2">
+            Login to continue to your blog.
+          </p>
+        </header>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        {/* Login Form */}
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-5"
+          aria-labelledby="login-heading"
+        >
+          {/* Email */}
           <div>
             <label
               htmlFor="user_Email"
@@ -104,9 +125,16 @@ const Login = () => {
 
             <input
               id="user_Email"
+              name="email"
               type="email"
               value={user_email}
               placeholder="you@example.com"
+              autoComplete="email"
+              required
+              aria-invalid={errors.email ? "true" : "false"}
+              aria-describedby={
+                errors.email ? "email-error" : undefined
+              }
               onChange={(e) => {
                 setUser_Email(e.target.value);
 
@@ -116,13 +144,24 @@ const Login = () => {
                 });
               }}
               className={`w-full rounded-xl border ${
-                errors.email ? "border-red-700" : "border-gray-300"
+                errors.email
+                  ? "border-red-700"
+                  : "border-gray-300"
               } px-4 py-3 outline-none transition focus:border-black focus:ring-2 focus:ring-black/10`}
             />
 
-            {errors.email && <div className="text-red-700">{errors.email}</div>}
+            {errors.email && (
+              <p
+                id="email-error"
+                role="alert"
+                className="mt-2 text-sm text-red-700"
+              >
+                {errors.email}
+              </p>
+            )}
           </div>
 
+          {/* Password */}
           <div>
             <label
               htmlFor="user_Password"
@@ -133,9 +172,16 @@ const Login = () => {
 
             <input
               id="user_Password"
+              name="password"
               value={user_password}
               type={type}
-              placeholder="password"
+              placeholder="Enter your password"
+              autoComplete="current-password"
+              required
+              aria-invalid={errors.password ? "true" : "false"}
+              aria-describedby={
+                errors.password ? "password-error" : undefined
+              }
               onChange={(e) => {
                 setUser_Password(e.target.value);
 
@@ -145,52 +191,68 @@ const Login = () => {
                 });
               }}
               className={`w-full rounded-xl border ${
-                errors.password ? "border-red-700" : "border-gray-300"
+                errors.password
+                  ? "border-red-700"
+                  : "border-gray-300"
               } px-4 py-3 outline-none transition focus:border-black focus:ring-2 focus:ring-black/10`}
             />
 
             {errors.password && (
-              <div className="text-red-700">{errors.password}</div>
+              <p
+                id="password-error"
+                role="alert"
+                className="mt-2 text-sm text-red-700"
+              >
+                {errors.password}
+              </p>
             )}
 
-            <div className="flex items-center mt-3" onClick={handleToggle}>
+            {/* Show Password */}
+            <div className="flex items-center mt-3">
               <label className="flex items-center gap-2 text-sm text-gray-500 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={type === "text"}
+                  onChange={handleToggle}
+                  aria-label={
+                    type === "password"
+                      ? "Show password"
+                      : "Hide password"
+                  }
+                  className="w-4 h-4 rounded border-gray-300 text-black focus:ring-black cursor-pointer"
+                />
+
                 <span className="hover:text-gray-800 transition-colors">
                   Show password
                 </span>
-
-                <input
-                  type="checkbox"
-                  className="w-4 h-4 rounded border-gray-300 text-black focus:ring-black cursor-pointer"
-                />
               </label>
             </div>
           </div>
 
+          {/* Submit */}
           <div className="pt-2">
             <button
               type="submit"
-              className="w-full rounded-xl bg-black py-3 font-semibold text-white transition hover:bg-gray-800 active:scale-[0.98]"
+              className="w-full rounded-xl bg-black py-3 font-semibold text-white transition hover:bg-gray-800 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
             >
               Login
             </button>
           </div>
-
-        
         </form>
 
+        {/* Sign Up */}
         <div className="mt-6 text-center text-sm text-gray-500">
           Don't have an account?{" "}
           <button
             type="button"
             onClick={() => navigate("/signup")}
-            className="font-semibold text-black hover:underline"
+            className="font-semibold text-black hover:underline focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 rounded"
           >
             Create account
           </button>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 

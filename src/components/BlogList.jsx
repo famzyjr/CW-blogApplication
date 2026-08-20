@@ -8,37 +8,45 @@ import {
 
 import BlogSkeleton from "../components/Skeletons/BlogSkeleton";
 import MarkdownPreview from "@uiw/react-markdown-preview";
-const BlogList = ({ blog=[], title, loading }) => {
 
- 
+const BlogList = ({ blog = [], title, loading }) => {
   const handleBookmark = (blog) => {
-  const Saved = localStorage.getItem("Bookmarks");
+    const Saved = localStorage.getItem("Bookmarks");
 
-  const bookmarks = Saved ? JSON.parse(Saved) : [];
+    const bookmarks = Saved ? JSON.parse(Saved) : [];
 
-  const alreadyBookmarked = bookmarks.some(
-    (item) => item === blog.id
-  );
-
-  if (!alreadyBookmarked) {
-    localStorage.setItem(
-      "Bookmarks",
-      JSON.stringify([...bookmarks, blog.id])
+    const alreadyBookmarked = bookmarks.some(
+      (item) => item === blog.id
     );
-  }
 
-  }
+    if (!alreadyBookmarked) {
+      localStorage.setItem(
+        "Bookmarks",
+        JSON.stringify([...bookmarks, blog.id])
+      );
+    }
+  };
 
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <section
+      className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10"
+      aria-labelledby="blog-list-title"
+    >
       {/* Heading */}
-      <h2 className="text-3xl sm:text-4xl font-bold text-center mb-10 sm:mb-14">
+      <h2
+        id="blog-list-title"
+        className="text-3xl sm:text-4xl font-bold text-center mb-10 sm:mb-14"
+      >
         {title}
       </h2>
 
       {/* Loading State */}
       {loading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8">
+        <div
+          className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8"
+          aria-label="Loading blog posts"
+          aria-busy="true"
+        >
           <BlogSkeleton />
           <BlogSkeleton />
           <BlogSkeleton />
@@ -52,7 +60,7 @@ const BlogList = ({ blog=[], title, loading }) => {
           {blog.map((blogs) => {
             const readingTime = Math.max(
               1,
-              Math.ceil(blogs.content.split(" ").length / 200),
+              Math.ceil(blogs.content.split(" ").length / 200)
             );
 
             return (
@@ -62,7 +70,11 @@ const BlogList = ({ blog=[], title, loading }) => {
               >
                 {/* Author */}
                 <div className="flex items-center gap-3">
-                  <div className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-black text-white font-semibold text-lg">
+                  {/* Decorative avatar */}
+                  <div
+                    className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-black text-white font-semibold text-lg"
+                    aria-hidden="true"
+                  >
                     {blogs.author_name.charAt(0).toUpperCase()}
                   </div>
 
@@ -72,7 +84,7 @@ const BlogList = ({ blog=[], title, loading }) => {
                     </h4>
 
                     <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-500 mt-1">
-                      <FiClock />
+                      <FiClock aria-hidden="true" />
                       <span>{readingTime} min read</span>
                     </div>
                   </div>
@@ -84,37 +96,54 @@ const BlogList = ({ blog=[], title, loading }) => {
                 </h3>
 
                 {/* Description */}
-                <p className="mt-4 text-sm sm:text-base text-gray-500 leading-7 line-clamp-3">
-                  <MarkdownPreview  source={blogs.content}/>
-                </p>
+                <div className="mt-4 text-sm sm:text-base text-gray-500 leading-7 line-clamp-3">
+                  <MarkdownPreview source={blogs.content} />
+                </div>
 
                 {/* Footer */}
                 <div className="mt-auto pt-8 flex items-center justify-between">
                   <div className="flex items-center gap-4 sm:gap-5 text-gray-500">
-                    <button className="flex items-center gap-1 hover:text-black transition">
-                      <FiArrowUp />
+                    
+                    {/* Upvote */}
+                    <button
+                      type="button"
+                      aria-label={`Upvote ${blogs.title}`}
+                      className="flex items-center gap-1 hover:text-black transition"
+                    >
+                      <FiArrowUp aria-hidden="true" />
                       <span className="text-sm">28</span>
                     </button>
 
-                    <button className="flex items-center gap-1 hover:text-black transition">
-                      <FiMessageCircle />
+                    {/* Comments */}
+                    <button
+                      type="button"
+                      aria-label={`View comments for ${blogs.title}`}
+                      className="flex items-center gap-1 hover:text-black transition"
+                    >
+                      <FiMessageCircle aria-hidden="true" />
                       <span className="text-sm">12</span>
                     </button>
 
-                    <button className="hover:text-black transition" onClick={()=> handleBookmark(blogs)} >
-                      <FiBookmark />
+                    {/* Bookmark */}
+                    <button
+                      type="button"
+                      aria-label={`Bookmark ${blogs.title}`}
+                      className="hover:text-black transition"
+                      onClick={() => handleBookmark(blogs)}
+                    >
+                      <FiBookmark aria-hidden="true" />
                     </button>
                   </div>
 
+                  {/* Read More */}
                   <Link
                     to={`/blogs/${blogs.id}`}
+                    aria-label={`Read more about ${blogs.title}`}
                     className="rounded-full bg-black text-white px-5 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-medium transition hover:bg-gray-800"
                   >
                     Read More
                   </Link>
                 </div>
-              
-             
               </article>
             );
           })}
