@@ -5,24 +5,28 @@ import {
   FiBookmark,
   FiClock,
 } from "react-icons/fi";
-import { useEffect, useState } from "react";
+
 import BlogSkeleton from "../components/Skeletons/BlogSkeleton";
 
-const BlogList = ({ blog, title, loading }) => {
+const BlogList = ({ blog=[], title, loading }) => {
 
-  const handleBookmark=(blog)=>{
-   const Saved = localStorage.getItem('Bookmarks');
+ 
+  const handleBookmark = (blog) => {
+  const Saved = localStorage.getItem("Bookmarks");
 
-   const bookmarks = Saved ? JSON.parse(Saved): [];
-   const alreadyBookmarked = bookmarks.some(
-     (item)=> item.id === blog.id
-   );
-   if(!alreadyBookmarked){
+  const bookmarks = Saved ? JSON.parse(Saved) : [];
+
+  const alreadyBookmarked = bookmarks.some(
+    (item) => item === blog.id
+  );
+
+  if (!alreadyBookmarked) {
     localStorage.setItem(
-      'Bookmarks',
-      JSON.stringify([...bookmarks,blog.id])
+      "Bookmarks",
+      JSON.stringify([...bookmarks, blog.id])
     );
-   }
+  }
+
   }
 
   return (
@@ -64,7 +68,7 @@ const BlogList = ({ blog, title, loading }) => {
 
                   <div>
                     <h4 className="font-semibold text-gray-900 capitalize text-sm sm:text-base">
-                      {blogs.author_name}  {console.log(blogs.author_name)}
+                      {blogs.author_name}
                     </h4>
 
                     <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-500 mt-1">
@@ -97,7 +101,7 @@ const BlogList = ({ blog, title, loading }) => {
                       <span className="text-sm">12</span>
                     </button>
 
-                    <button className="hover:text-black transition" onClick={()=> handleBookmark} >
+                    <button className="hover:text-black transition" onClick={()=> handleBookmark(blogs)} >
                       <FiBookmark />
                     </button>
                   </div>

@@ -9,6 +9,7 @@ import Login from "./pages/Login";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import Footer from "./components/Footer";
 import SignUp from "./pages/SignUp";
+import Bookmarked from "./pages/Bookmarked";
 function App() {
   return (
     <BrowserRouter>
@@ -38,6 +39,7 @@ function App() {
 
         <Route path="/login" element={<Login />} />   
         <Route path="/SignUp" element={<SignUp/>}/>
+         <Route path="/bookmarked" element={<Bookmarked/>}/>
       </Routes>
    
       <Footer/>

@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import ProtectedRoute from "../components/ProtectedRoutes";
-
+import Bookmarked from "../pages/Bookmarked";
 const Navbar = () => {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [user, setUser] = useState(null);
@@ -67,6 +67,9 @@ const Navbar = () => {
 
           <Link className="create-btn" to="/createblogs">
             Create blog
+          </Link>
+            <Link className="" to="/bookmarked">
+           Bookmarked
           </Link>
         </ul>
       </nav>
