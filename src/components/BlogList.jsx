@@ -7,7 +7,7 @@ import {
 } from "react-icons/fi";
 
 import BlogSkeleton from "../components/Skeletons/BlogSkeleton";
-
+import MarkdownPreview from "@uiw/react-markdown-preview";
 const BlogList = ({ blog=[], title, loading }) => {
 
  
@@ -85,7 +85,7 @@ const BlogList = ({ blog=[], title, loading }) => {
 
                 {/* Description */}
                 <p className="mt-4 text-sm sm:text-base text-gray-500 leading-7 line-clamp-3">
-                  {blogs.content}
+                  <MarkdownPreview  source={blogs.content}/>
                 </p>
 
                 {/* Footer */}
