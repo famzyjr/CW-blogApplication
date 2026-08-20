@@ -2,8 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { toast, Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import MDEditor from "@uiw/react-md-editor";
-
+import MarkdownEditor from "@uiw/react-markdown-editor";
 const CreateBlogs = () => {
   const [title, setTitle] = useState("");
   const [content, setcontent] = useState("");
@@ -92,7 +91,6 @@ const CreateBlogs = () => {
                 type="text"
                 value={title}
                 id="blog-title"
-            
                 title="The first name must contain letters only"
                 required
                 onChange={(e) => setTitle(e.target.value)}
@@ -134,12 +132,15 @@ const CreateBlogs = () => {
                 data-color-mode="light"
                 className="overflow-hidden rounded-2xl border border-gray-200 shadow-sm"
               >
-                <MDEditor
-                  value={content}
-                  onChange={setcontent}
-                  height={300}
-                  preview="live"
-                />
+                
+                <div className="App" data-color-mode="light">
+                  <MarkdownEditor
+                    value={content}
+                    enablePreview={true}
+                    onChange={setcontent}
+                    height="500px"
+                  />
+                </div>
               </div>
             </div>
 
