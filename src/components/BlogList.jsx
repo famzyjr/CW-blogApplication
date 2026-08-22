@@ -8,25 +8,42 @@ import {
 
 import BlogSkeleton from "../components/Skeletons/BlogSkeleton";
 import MarkdownPreview from "@uiw/react-markdown-preview";
+import { auth } from "../firebase/firebaseConfig";
 
 const BlogList = ({ blog = [], title, loading }) => {
-  const handleBookmark = (blog) => {
-    const Saved = localStorage.getItem("Bookmarks");
+ const handleBookmark = (blog) => {
+  const user = auth.currentUser;
 
-    const bookmarks = Saved ? JSON.parse(Saved) : [];
+  if (!user) {
+    alert("Log in to save bookmark");
+    return;
+  }
 
-    const alreadyBookmarked = bookmarks.some(
-      (item) => item === blog.id
+  const bookmarkKey = `Saved_${user.uid}`;
+
+  const saved = localStorage.getItem(bookmarkKey);
+
+  const bookmarks = saved ? JSON.parse(saved) : [];
+
+  const alreadyBookmarked = bookmarks.some(
+    (item) => item === blog.id
+  );
+
+  let updatedBookmarks;
+
+  if (alreadyBookmarked) {
+    updatedBookmarks = bookmarks.filter(
+      (item) => item !== blog.id
     );
+  } else {
+    updatedBookmarks = [...bookmarks, blog.id];
+  }
 
-    if (!alreadyBookmarked) {
-      localStorage.setItem(
-        "Bookmarks",
-        JSON.stringify([...bookmarks, blog.id])
-      );
-    }
-  };
-
+  localStorage.setItem(
+    bookmarkKey,
+    JSON.stringify(updatedBookmarks)
+  );
+};
   return (
     <section
       className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10"
@@ -60,7 +77,7 @@ const BlogList = ({ blog = [], title, loading }) => {
           {blog.map((blogs) => {
             const readingTime = Math.max(
               1,
-              Math.ceil(blogs.content.split(" ").length / 200)
+              Math.ceil(blogs.content.split(" ").length / 200),
             );
 
             return (
@@ -103,7 +120,6 @@ const BlogList = ({ blog = [], title, loading }) => {
                 {/* Footer */}
                 <div className="mt-auto pt-8 flex items-center justify-between">
                   <div className="flex items-center gap-4 sm:gap-5 text-gray-500">
-                    
                     {/* Upvote */}
                     <button
                       type="button"

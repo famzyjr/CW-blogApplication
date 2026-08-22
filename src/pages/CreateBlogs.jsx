@@ -39,7 +39,7 @@ const CreateBlogs = () => {
         return res.json();
       })
       .then((data) => {
-        console.log("New blog added:", data);
+        data;
 
         setisPending(false);
 
@@ -161,10 +161,7 @@ const CreateBlogs = () => {
                 />
               </div>
 
-              <p
-                id="blog-content-help"
-                className="mt-2 text-sm text-gray-500"
-              >
+              <p id="blog-content-help" className="mt-2 text-sm text-gray-500">
                 Write your blog content using Markdown. You can preview your
                 content while writing.
               </p>

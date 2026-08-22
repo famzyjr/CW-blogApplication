@@ -66,8 +66,7 @@ const Login = () => {
 
       const user = userCredential.user;
 
-      console.log("Logged in user:", user);
-
+      
       navigate("/blogs");
 
       setUser_Email("");

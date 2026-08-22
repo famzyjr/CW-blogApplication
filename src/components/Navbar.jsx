@@ -6,8 +6,7 @@ import { signOut } from "firebase/auth";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
-import ProtectedRoute from "../components/ProtectedRoutes";
-import Bookmarked from "../pages/Bookmarked";
+
 const Navbar = () => {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [user, setUser] = useState(null);
@@ -28,7 +27,7 @@ const Navbar = () => {
   };
   const handelSignout = () => {
     SignOut();
-       navigate("/");
+    navigate("/");
   };
   return (
     <div className="s">
@@ -39,7 +38,9 @@ const Navbar = () => {
 
         <ul>
           <Link to="/blogs">Blogs</Link>
-
+          <Link className="" to="/bookmarked">
+            Bookmarked
+          </Link>
           <div className="icon-container z-50">
             <User className="icon" size={35} />
 
@@ -67,9 +68,6 @@ const Navbar = () => {
 
           <Link className="create-btn" to="/createblogs">
             Create blog
-          </Link>
-            <Link className="" to="/bookmarked">
-           Bookmarked
           </Link>
         </ul>
       </nav>
