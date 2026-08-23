@@ -3,22 +3,35 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
+import { Eye } from "lucide-react";
+import { EyeClosed } from "lucide-react";
+
 
 const SignUp = () => {
   const [user_email, setUser_Email] = useState("");
   const [user_password, setUser_Password] = useState("");
   const [errors, setErrors] = useState({});
   const [type, setType] = useState("password");
-
+const [Icon, setIcon] = useState(EyeClosed);
   const navigate = useNavigate();
 
+  // Signup validation schema
   const SignUpSchema = z.object({
-    email: z.string().email({
-      message: "Please enter a valid email",
-    }),
+    email: z
+      .string()
+      .trim()
+      .min(1, {
+        message: "Email is required",
+      })
+      .email({
+        message: "Please enter a valid email",
+      }),
 
     password: z
       .string()
+      .min(1, {
+        message: "Password is required",
+      })
       .min(8, {
         message: "Password must be at least 8 characters long",
       })
@@ -39,7 +52,8 @@ const SignUp = () => {
       }),
   });
 
-  const handelValidation = () => {
+  // Form validation
+  const handleValidation = () => {
     const inputResult = SignUpSchema.safeParse({
       email: user_email,
       password: user_password,
@@ -61,19 +75,21 @@ const SignUp = () => {
     return true;
   };
 
+  // Submit form
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const isValid = handelValidation();
+    const isValid = handleValidation();
 
     if (!isValid) {
       return;
     }
 
-    await SignIn();
+    await createAccount();
   };
 
-  const SignIn = async () => {
+  // Firebase signup
+  const createAccount = async () => {
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
@@ -118,11 +134,18 @@ const SignUp = () => {
     }
   };
 
+  // Show/hide password
   const handleToggle = () => {
-    setType((currentType) =>
-      currentType === "password" ? "text" : "password"
-    );
-  };
+      if (type === "password") {  
+       setIcon(Eye)
+        setType("text");
+     
+      } else { 
+         setIcon(EyeClosed)
+        setType("password");
+      
+      }
+    };
 
   return (
     <main className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
@@ -146,6 +169,7 @@ const SignUp = () => {
           onSubmit={handleSubmit}
           className="space-y-5"
           aria-labelledby="signup-heading"
+          noValidate
         >
           {/* Email */}
           <div>
@@ -240,26 +264,9 @@ const SignUp = () => {
               </p>
             )}
 
-            {/* Show password */}
-            <div className="flex items-center mt-3">
-              <label className="flex items-center gap-2 text-sm text-gray-500 cursor-pointer select-none">
-                <input
-                  type="checkbox"
-                  checked={type === "text"}
-                  onChange={handleToggle}
-                  aria-label={
-                    type === "password"
-                      ? "Show password"
-                      : "Hide password"
-                  }
-                  className="w-4 h-4 rounded border-gray-300 text-black focus:ring-black cursor-pointer"
-                />
-
-                <span className="hover:text-gray-800 transition-colors">
-                  Show password
-                </span>
-              </label>
-            </div>
+              <span className="flex justify-end relative bottom-6.25 left-2 items-center "  onClick={handleToggle}>
+                  <Icon className="absolute mr-10"  size={25}/>
+              </span>
           </div>
 
           {/* Submit */}

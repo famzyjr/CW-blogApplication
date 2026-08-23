@@ -289,6 +289,7 @@ function Details() {
                       type="button"
                       onClick={SaveBlog}
                       disabled={isPending}
+                      
                       aria-busy={isPending}
                       className={`px-7 py-3 rounded-xl bg-black text-white transition focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 ${
                         isPending

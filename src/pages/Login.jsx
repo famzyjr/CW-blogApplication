@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
 import { useNavigate } from "react-router-dom";
+import { toast, Toaster } from "react-hot-toast";
+import { Eye } from "lucide-react";
+import { EyeClosed } from "lucide-react";
 import { z } from "zod";
 
 const Login = () => {
@@ -9,27 +12,38 @@ const Login = () => {
   const [user_password, setUser_Password] = useState("");
   const [errors, setErrors] = useState({});
   const [type, setType] = useState("password");
-
+const [Icon, setIcon] = useState(EyeClosed);
   const navigate = useNavigate();
 
-  const LoginSchema = z.object({
-    email: z.string().email({
-      message: "Please enter a valid email",
-    }),
-
-    password: z.string().min(1, {
-      message: "Password is required",
-    }),
-  });
-
+  // Form validation
   const handelValidation = () => {
+    const LoginSchema = z.object({
+      email: z
+        .string()
+        .trim()
+        .min(1, {
+          message: "Email is required",
+        })
+        .email({
+          message: "Please enter a valid email",
+        }),
+
+      password: z.string().min(1, {
+        message: "Password is required",
+      }),
+    });
+
     const inputResult = LoginSchema.safeParse({
       email: user_email,
       password: user_password,
     });
 
+    inputResult;
+
     if (!inputResult.success) {
       const inputErrors = inputResult.error.flatten().fieldErrors;
+
+      console.log(inputErrors);
 
       setErrors({
         email: inputErrors.email?.[0] || "",
@@ -40,22 +54,27 @@ const Login = () => {
     }
 
     setErrors({});
+
     return true;
   };
 
+  // Submit form
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate before sending request to Firebase
+    // Validate form first
     const isValid = handelValidation();
 
+    // Stop if validation fails
     if (!isValid) {
       return;
     }
 
+    // Login only if validation passes
     await LoginUser();
   };
 
+  // Firebase Login
   const LoginUser = async () => {
     try {
       const userCredential = await signInWithEmailAndPassword(
@@ -66,53 +85,66 @@ const Login = () => {
 
       const user = userCredential.user;
 
-      
-      navigate("/blogs");
+      console.log("Logged in user:", user);
 
       setUser_Email("");
       setUser_Password("");
       setErrors({});
+
+      navigate("/blogs");
     } catch (error) {
       console.log("Firebase error:", error);
       console.log("Firebase error code:", error.code);
       console.log("Firebase error message:", error.message);
 
-      setErrors({
-        email: "",
-        password: "Incorrect email or password.",
-      });
+      // Firebase authentication error
+      if (
+        error.code === "auth/invalid-credential" ||
+        error.code === "auth/wrong-password" ||
+        error.code === "auth/user-not-found"
+      ) {
+        toast.error("Incorrect email or password.");
+      } else if (error.code === "auth/invalid-email") {
+        toast.error("Please enter a valid email.");
+      } else if (error.code === "auth/too-many-requests") {
+        toast.error(
+          "Too many login attempts. Please try again later."
+        );
+      } else {
+        toast.error("Something went wrong. Please try again.");
+      }
     }
   };
 
+  // Show/hide password
   const handleToggle = () => {
-    setType((currentType) =>
-      currentType === "password" ? "text" : "password"
-    );
+    if (type === "password") {  
+     setIcon(Eye)
+      setType("text");
+   
+    } else { 
+       setIcon(EyeClosed)
+      setType("password");
+    
+    }
   };
 
   return (
-    <main className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
         {/* Header */}
-        <header className="text-center mb-8">
-          <h1
-            id="login-heading"
-            className="text-3xl font-bold text-gray-900"
-          >
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-gray-900">
             Welcome Back
           </h1>
 
           <p className="text-gray-500 mt-2">
             Login to continue to your blog.
           </p>
-        </header>
+        </div>
 
         {/* Login Form */}
-        <form
-          onSubmit={handleSubmit}
-          className="space-y-5"
-          aria-labelledby="login-heading"
-        >
+        <form onSubmit={handleSubmit} className="space-y-5">
           {/* Email */}
           <div>
             <label
@@ -129,11 +161,6 @@ const Login = () => {
               value={user_email}
               placeholder="you@example.com"
               autoComplete="email"
-              required
-              aria-invalid={errors.email ? "true" : "false"}
-              aria-describedby={
-                errors.email ? "email-error" : undefined
-              }
               onChange={(e) => {
                 setUser_Email(e.target.value);
 
@@ -150,13 +177,9 @@ const Login = () => {
             />
 
             {errors.email && (
-              <p
-                id="email-error"
-                role="alert"
-                className="mt-2 text-sm text-red-700"
-              >
+              <div className="mt-2 text-sm text-red-700">
                 {errors.email}
-              </p>
+              </div>
             )}
           </div>
 
@@ -174,13 +197,8 @@ const Login = () => {
               name="password"
               value={user_password}
               type={type}
-              placeholder="Enter your password"
+              placeholder="Password"
               autoComplete="current-password"
-              required
-              aria-invalid={errors.password ? "true" : "false"}
-              aria-describedby={
-                errors.password ? "password-error" : undefined
-              }
               onChange={(e) => {
                 setUser_Password(e.target.value);
 
@@ -195,44 +213,22 @@ const Login = () => {
                   : "border-gray-300"
               } px-4 py-3 outline-none transition focus:border-black focus:ring-2 focus:ring-black/10`}
             />
-
+     <span className="flex justify-end relative bottom-6.25 left-2 items-center "  onClick={handleToggle}>
+                  <Icon className="absolute mr-10"  size={25}/>
+              </span>
             {errors.password && (
-              <p
-                id="password-error"
-                role="alert"
-                className="mt-2 text-sm text-red-700"
-              >
+              <div className="mt-2 text-sm text-red-700">
                 {errors.password}
-              </p>
+              </div>
             )}
 
-            {/* Show Password */}
-            <div className="flex items-center mt-3">
-              <label className="flex items-center gap-2 text-sm text-gray-500 cursor-pointer select-none">
-                <input
-                  type="checkbox"
-                  checked={type === "text"}
-                  onChange={handleToggle}
-                  aria-label={
-                    type === "password"
-                      ? "Show password"
-                      : "Hide password"
-                  }
-                  className="w-4 h-4 rounded border-gray-300 text-black focus:ring-black cursor-pointer"
-                />
-
-                <span className="hover:text-gray-800 transition-colors">
-                  Show password
-                </span>
-              </label>
-            </div>
           </div>
 
           {/* Submit */}
           <div className="pt-2">
             <button
               type="submit"
-              className="w-full rounded-xl bg-black py-3 font-semibold text-white transition hover:bg-gray-800 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
+              className="w-full rounded-xl bg-black py-3 font-semibold text-white transition hover:bg-gray-800 active:scale-[0.98]"
             >
               Login
             </button>
@@ -245,13 +241,16 @@ const Login = () => {
           <button
             type="button"
             onClick={() => navigate("/signup")}
-            className="font-semibold text-black hover:underline focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 rounded"
+            className="font-semibold text-black hover:underline"
           >
             Create account
           </button>
         </div>
       </div>
-    </main>
+
+      {/* Toast */}
+      <Toaster position="bottom-right" />
+    </div>
   );
 };
 
