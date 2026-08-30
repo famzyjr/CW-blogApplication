@@ -94,13 +94,13 @@ nav a:hover {
   transform: translateY(0);
 }
 
-.profile-menu span {
+.profile-menu button {
   display: block;
   padding: 8px;
   color: #222;
 }
 
-.profile-menu span:hover {
+.profile-menu button:hover {
   background: #f2f2f2;
   border-radius: 6px;
 }

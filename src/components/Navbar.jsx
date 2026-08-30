@@ -52,15 +52,15 @@ const Navbar = () => {
               {user ? (
                 <div onClick={() => setShowLogoutModal(true)}>
                   <Link>
-                    <span>Log out</span>
+                    <button>Log out</button>
                   </Link>
                 </div>
               ) : (
                 <div>
                   {" "}
-                  <span>
+                  <button>
                     <Link to="/login">Sign up</Link>
-                  </span>
+                  </button>
                 </div>
               )}
             </div>
