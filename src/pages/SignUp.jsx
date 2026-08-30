@@ -6,13 +6,12 @@ import { z } from "zod";
 import { Eye } from "lucide-react";
 import { EyeClosed } from "lucide-react";
 
-
 const SignUp = () => {
   const [user_email, setUser_Email] = useState("");
   const [user_password, setUser_Password] = useState("");
   const [errors, setErrors] = useState({});
   const [type, setType] = useState("password");
-const [Icon, setIcon] = useState(EyeClosed);
+  const [Icon, setIcon] = useState(EyeClosed);
   const navigate = useNavigate();
 
   // Signup validation schema
@@ -94,7 +93,7 @@ const [Icon, setIcon] = useState(EyeClosed);
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         user_email,
-        user_password
+        user_password,
       );
 
       const user = userCredential.user;
@@ -136,26 +135,21 @@ const [Icon, setIcon] = useState(EyeClosed);
 
   // Show/hide password
   const handleToggle = () => {
-      if (type === "password") {  
-       setIcon(Eye)
-        setType("text");
-     
-      } else { 
-         setIcon(EyeClosed)
-        setType("password");
-      
-      }
-    };
+    if (type === "password") {
+      setIcon(Eye);
+      setType("text");
+    } else {
+      setIcon(EyeClosed);
+      setType("password");
+    }
+  };
 
   return (
     <main className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
         {/* Header */}
         <header className="text-center mb-8">
-          <h1
-            id="signup-heading"
-            className="text-3xl font-bold text-gray-900"
-          >
+          <h1 id="signup-heading" className="text-3xl font-bold text-gray-900">
             Create an account
           </h1>
 
@@ -189,9 +183,7 @@ const [Icon, setIcon] = useState(EyeClosed);
               autoComplete="email"
               required
               aria-invalid={errors.email ? "true" : "false"}
-              aria-describedby={
-                errors.email ? "email-error" : undefined
-              }
+              aria-describedby={errors.email ? "email-error" : undefined}
               onChange={(e) => {
                 setUser_Email(e.target.value);
 
@@ -201,9 +193,7 @@ const [Icon, setIcon] = useState(EyeClosed);
                 });
               }}
               className={`w-full rounded-xl border ${
-                errors.email
-                  ? "border-red-700"
-                  : "border-gray-300"
+                errors.email ? "border-red-700" : "border-gray-300"
               } px-4 py-3 outline-none transition focus:border-black focus:ring-2 focus:ring-black/10`}
             />
 
@@ -227,7 +217,8 @@ const [Icon, setIcon] = useState(EyeClosed);
               Password
             </label>
 
-            <input
+           <div>
+             <input
               id="user_Password"
               name="password"
               value={user_password}
@@ -236,9 +227,7 @@ const [Icon, setIcon] = useState(EyeClosed);
               autoComplete="new-password"
               required
               aria-invalid={errors.password ? "true" : "false"}
-              aria-describedby={
-                errors.password ? "password-error" : undefined
-              }
+              aria-describedby={errors.password ? "password-error" : undefined}
               onChange={(e) => {
                 setUser_Password(e.target.value);
 
@@ -248,25 +237,28 @@ const [Icon, setIcon] = useState(EyeClosed);
                 });
               }}
               className={`w-full rounded-xl border ${
-                errors.password
-                  ? "border-red-700"
-                  : "border-gray-300"
+                errors.password ? "border-red-700" : "border-gray-300"
               } px-4 py-3 outline-none transition focus:border-black focus:ring-2 focus:ring-black/10`}
             />
-
-            {errors.password && (
-              <p
-                id="password-error"
-                role="alert"
-                className="mt-2 text-sm text-red-700"
-              >
-                {errors.password}
-              </p>
-            )}
-
-              <span className="flex justify-end relative bottom-6.25 left-2 items-center "  onClick={handleToggle}>
-                  <Icon className="absolute mr-10"  size={25}/>
-              </span>
+             <div className="flex justify-end right-10 relative bottom-10">
+              {" "}
+              <button onClick={handleToggle}>
+                <Icon className="absolute mr-10" size={25} />
+              </button>
+            </div>
+           </div>
+       
+            <div>
+              {errors.password && (
+                <p
+                  id="password-error"
+                  role="alert"
+                  className="mt-2 text-sm text-red-700"
+                >
+                  {errors.password}
+                </p>
+              )}
+            </div>
           </div>
 
           {/* Submit */}

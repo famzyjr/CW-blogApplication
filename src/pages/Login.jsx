@@ -12,7 +12,7 @@ const Login = () => {
   const [user_password, setUser_Password] = useState("");
   const [errors, setErrors] = useState({});
   const [type, setType] = useState("password");
-const [Icon, setIcon] = useState(EyeClosed);
+  const [Icon, setIcon] = useState(EyeClosed);
   const navigate = useNavigate();
 
   // Form validation
@@ -80,7 +80,7 @@ const [Icon, setIcon] = useState(EyeClosed);
       const userCredential = await signInWithEmailAndPassword(
         auth,
         user_email,
-        user_password
+        user_password,
       );
 
       const user = userCredential.user;
@@ -107,9 +107,7 @@ const [Icon, setIcon] = useState(EyeClosed);
       } else if (error.code === "auth/invalid-email") {
         toast.error("Please enter a valid email.");
       } else if (error.code === "auth/too-many-requests") {
-        toast.error(
-          "Too many login attempts. Please try again later."
-        );
+        toast.error("Too many login attempts. Please try again later.");
       } else {
         toast.error("Something went wrong. Please try again.");
       }
@@ -118,14 +116,12 @@ const [Icon, setIcon] = useState(EyeClosed);
 
   // Show/hide password
   const handleToggle = () => {
-    if (type === "password") {  
-     setIcon(Eye)
+    if (type === "password") {
+      setIcon(Eye);
       setType("text");
-   
-    } else { 
-       setIcon(EyeClosed)
+    } else {
+      setIcon(EyeClosed);
       setType("password");
-    
     }
   };
 
@@ -134,13 +130,9 @@ const [Icon, setIcon] = useState(EyeClosed);
       <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">
-            Welcome Back
-          </h1>
+          <h1 className="text-3xl font-bold text-gray-900">Welcome Back</h1>
 
-          <p className="text-gray-500 mt-2">
-            Login to continue to your blog.
-          </p>
+          <p className="text-gray-500 mt-2">Login to continue to your blog.</p>
         </div>
 
         {/* Login Form */}
@@ -170,16 +162,12 @@ const [Icon, setIcon] = useState(EyeClosed);
                 });
               }}
               className={`w-full rounded-xl border ${
-                errors.email
-                  ? "border-red-700"
-                  : "border-gray-300"
+                errors.email ? "border-red-700" : "border-gray-300"
               } px-4 py-3 outline-none transition focus:border-black focus:ring-2 focus:ring-black/10`}
             />
 
             {errors.email && (
-              <div className="mt-2 text-sm text-red-700">
-                {errors.email}
-              </div>
+              <div className="mt-2 text-sm text-red-700">{errors.email}</div>
             )}
           </div>
 
@@ -208,20 +196,18 @@ const [Icon, setIcon] = useState(EyeClosed);
                 });
               }}
               className={`w-full rounded-xl border ${
-                errors.password
-                  ? "border-red-700"
-                  : "border-gray-300"
+                errors.password ? "border-red-700" : "border-gray-300"
               } px-4 py-3 outline-none transition focus:border-black focus:ring-2 focus:ring-black/10`}
             />
-     <span className="flex justify-end relative bottom-6.25 left-2 items-center "  onClick={handleToggle}>
-                  <Icon className="absolute mr-10"  size={25}/>
-              </span>
-            {errors.password && (
-              <div className="mt-2 text-sm text-red-700">
-                {errors.password}
-              </div>
-            )}
+            <div className="flex justify-end right-10 relative bottom-10">
+              <button className="" onClick={handleToggle}>
+                <Icon className="absolute mr-10" size={25} />
+              </button>
+            </div>
 
+            {errors.password && (
+              <div className="mt-2 text-sm text-red-700">{errors.password}</div>
+            )}
           </div>
 
           {/* Submit */}
