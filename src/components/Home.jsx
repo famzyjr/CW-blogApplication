@@ -5,20 +5,15 @@ import useFetch from "../../hooks/useFetch";
 const endpoint = "https://cw-blog-backend.onrender.com";
 
 const Home = () => {
-  const { data: blogs, ispending, error } = useFetch(
-    `${endpoint}/api/blogs`
-  );
+  const { data: blogs, ispending, error } = useFetch(`${endpoint}/api/blogs`);
 
   return (
     <div className="home">
-      {error ? <div className="errors">{error}</div> :  <BlogList
-        blog={blogs || []}
-        title="All Blogs!"
-        loading={ispending}
-      />}
-
-     
-     
+      {error ? (
+        <div className="errors">{error}</div>
+      ) : (
+        <BlogList blog={blogs || []} title="All Blogs!" loading={ispending} />
+      )}
     </div>
   );
 };
