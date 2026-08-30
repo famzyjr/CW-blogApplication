@@ -11,13 +11,13 @@ const Home = () => {
 
   return (
     <div className="home">
-      {error && <div className="errors">{error}</div>}
-
-      <BlogList
+      {error ? <div className="errors">{error}</div> :  <BlogList
         blog={blogs || []}
         title="All Blogs!"
         loading={ispending}
-      />
+      />}
+
+     
      
     </div>
   );
