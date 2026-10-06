@@ -8,8 +8,8 @@ const useFetch = (url) => {
   useEffect(() => {
     const abortConst = new AbortController();
     setTimeout(() => {
-      fetch(url, {signal: abortConst.signal})
-        .then(res => {
+      fetch(url, { signal: abortConst.signal })
+        .then((res) => {
           if (!res.ok) {
             throw Error("404 blog not found");
           }
@@ -21,16 +21,15 @@ const useFetch = (url) => {
           setError(null);
         })
         .catch((err) => {
-          if(err.name === 'AbortError'){
-            console.log('fetch aborted');
-          }else{
-          setIspending(false);
-          setError(err.message);
+          if (err.name === "AbortError") {
+            console.log("fetch aborted");
+          } else {
+            setIspending(false);
+            setError(err.message);
           }
-        
         });
     }, 1000);
-    return () => abortConst.abort()
+    return () => abortConst.abort();
   }, [url]);
   return { data, ispending, error };
 };

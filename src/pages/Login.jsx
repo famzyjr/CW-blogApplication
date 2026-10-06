@@ -43,8 +43,7 @@ const Login = () => {
     if (!inputResult.success) {
       const inputErrors = inputResult.error.flatten().fieldErrors;
 
-      console.log(inputErrors);
-
+     
       setErrors({
         email: inputErrors.email?.[0] || "",
         password: inputErrors.password?.[0] || "",
