@@ -6,89 +6,64 @@ import { toast, Toaster } from "react-hot-toast";
 import { Eye } from "lucide-react";
 import { EyeClosed } from "lucide-react";
 import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const Login = () => {
-  const [user_email, setUser_Email] = useState("");
-  const [user_password, setUser_Password] = useState("");
-  const [errors, setErrors] = useState({});
   const [type, setType] = useState("password");
   const [Icon, setIcon] = useState(EyeClosed);
   const navigate = useNavigate();
 
-  // Form validation
-  const handelValidation = () => {
-    const LoginSchema = z.object({
-      email: z
-        .string()
-        .trim()
-        .min(1, {
-          message: "Email is required",
-        })
-        .email({
-          message: "Please enter a valid email",
-        }),
-
-      password: z.string().min(1, {
-        message: "Password is required",
+  // Form validation schema
+  const LoginSchema = z.object({
+    email: z
+      .string()
+      .trim()
+      .min(1, {
+        message: "Email is required",
+      })
+      .email({
+        message: "Please enter a valid email",
       }),
-    });
 
-    const inputResult = LoginSchema.safeParse({
-      email: user_email,
-      password: user_password,
-    });
+    password: z.string().min(1, {
+      message: "Password is required",
+    }),
+  });
 
-    inputResult;
-
-    if (!inputResult.success) {
-      const inputErrors = inputResult.error.flatten().fieldErrors;
-
-     
-      setErrors({
-        email: inputErrors.email?.[0] || "",
-        password: inputErrors.password?.[0] || "",
-      });
-
-      return false;
-    }
-
-    setErrors({});
-
-    return true;
-  };
+  // React Hook Form
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    resolver: zodResolver(LoginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
 
   // Submit form
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // Validate form first
-    const isValid = handelValidation();
-
-    // Stop if validation fails
-    if (!isValid) {
-      return;
-    }
-
-    // Login only if validation passes
-    await LoginUser();
+  const handleSubmitForm = async (data) => {
+    await LoginUser(data);
   };
 
   // Firebase Login
-  const LoginUser = async () => {
+  const LoginUser = async (data) => {
     try {
       const userCredential = await signInWithEmailAndPassword(
         auth,
-        user_email,
-        user_password,
+        data.email,
+        data.password,
       );
 
       const user = userCredential.user;
 
       console.log("Logged in user:", user);
 
-      setUser_Email("");
-      setUser_Password("");
-      setErrors({});
+      reset();
 
       navigate("/blogs");
     } catch (error) {
@@ -135,7 +110,7 @@ const Login = () => {
         </div>
 
         {/* Login Form */}
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit(handleSubmitForm)} className="space-y-5">
           {/* Email */}
           <div>
             <label
@@ -147,26 +122,19 @@ const Login = () => {
 
             <input
               id="user_Email"
-              name="email"
               type="email"
-              value={user_email}
               placeholder="you@example.com"
               autoComplete="email"
-              onChange={(e) => {
-                setUser_Email(e.target.value);
-
-                setErrors({
-                  ...errors,
-                  email: "",
-                });
-              }}
+              {...register("email")}
               className={`w-full rounded-xl border ${
                 errors.email ? "border-red-700" : "border-gray-300"
               } px-4 py-3 outline-none transition focus:border-black focus:ring-2 focus:ring-black/10`}
             />
 
             {errors.email && (
-              <div className="mt-2 text-sm text-red-700">{errors.email}</div>
+              <div className="mt-2 text-sm text-red-700">
+                {errors.email.message}
+              </div>
             )}
           </div>
 
@@ -181,31 +149,25 @@ const Login = () => {
 
             <input
               id="user_Password"
-              name="password"
-              value={user_password}
               type={type}
               placeholder="Password"
               autoComplete="current-password"
-              onChange={(e) => {
-                setUser_Password(e.target.value);
-
-                setErrors({
-                  ...errors,
-                  password: "",
-                });
-              }}
+              {...register("password")}
               className={`w-full rounded-xl border ${
                 errors.password ? "border-red-700" : "border-gray-300"
               } px-4 py-3 outline-none transition focus:border-black focus:ring-2 focus:ring-black/10`}
             />
+
             <div className="flex justify-end right-10 relative bottom-10">
-              <button className="" onClick={handleToggle}>
+              <button type="button" onClick={handleToggle}>
                 <Icon className="absolute mr-10" size={25} />
               </button>
             </div>
 
             {errors.password && (
-              <div className="mt-2 text-sm text-red-700">{errors.password}</div>
+              <div className="mt-2 text-sm text-red-700">
+                {errors.password.message}
+              </div>
             )}
           </div>
 
