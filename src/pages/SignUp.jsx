@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
@@ -5,11 +6,10 @@ import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { Eye } from "lucide-react";
 import { EyeClosed } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const SignUp = () => {
-  const [user_email, setUser_Email] = useState("");
-  const [user_password, setUser_Password] = useState("");
-  const [errors, setErrors] = useState({});
   const [type, setType] = useState("password");
   const [Icon, setIcon] = useState(EyeClosed);
   const navigate = useNavigate();
@@ -51,58 +51,40 @@ const SignUp = () => {
       }),
   });
 
-  // Form validation
-  const handleValidation = () => {
-    const inputResult = SignUpSchema.safeParse({
-      email: user_email,
-      password: user_password,
-    });
-
-    if (!inputResult.success) {
-      const inputErrors = inputResult.error.flatten().fieldErrors;
-
-      setErrors({
-        email: inputErrors.email?.[0] || "",
-        password: inputErrors.password?.[0] || "",
-      });
-
-      return false;
-    }
-
-    setErrors({});
-
-    return true;
-  };
+  // React Hook Form
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    setError,
+  } = useForm({
+    resolver: zodResolver(SignUpSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
 
   // Submit form
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const isValid = handleValidation();
-
-    if (!isValid) {
-      return;
-    }
-
-    await createAccount();
+  const handleSubmitForm = async (data) => {
+    await createAccount(data);
   };
 
   // Firebase signup
-  const createAccount = async () => {
+  const createAccount = async (data) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
-        user_email,
-        user_password,
+        data.email,
+        data.password,
       );
 
       const user = userCredential.user;
 
       console.log("Created user:", user);
 
-      setUser_Email("");
-      setUser_Password("");
-      setErrors({});
+      reset();
 
       navigate("/blogs");
     } catch (error) {
@@ -110,24 +92,24 @@ const SignUp = () => {
       console.log("Firebase error code:", error.code);
 
       if (error.code === "auth/email-already-in-use") {
-        setErrors({
-          email: "An account with this email already exists.",
-          password: "",
+        setError("email", {
+          type: "server",
+          message: "An account with this email already exists.",
         });
       } else if (error.code === "auth/invalid-email") {
-        setErrors({
-          email: "Please enter a valid email.",
-          password: "",
+        setError("email", {
+          type: "server",
+          message: "Please enter a valid email.",
         });
       } else if (error.code === "auth/weak-password") {
-        setErrors({
-          email: "",
-          password: "Your password is too weak.",
+        setError("password", {
+          type: "server",
+          message: "Your password is too weak.",
         });
       } else {
-        setErrors({
-          email: "",
-          password: "Something went wrong. Please try again.",
+        setError("password", {
+          type: "server",
+          message: "Something went wrong. Please try again.",
         });
       }
     }
@@ -149,7 +131,10 @@ const SignUp = () => {
       <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
         {/* Header */}
         <header className="text-center mb-8">
-          <h1 id="signup-heading" className="text-3xl font-bold text-gray-900">
+          <h1
+            id="signup-heading"
+            className="text-3xl font-bold text-gray-900"
+          >
             Create an account
           </h1>
 
@@ -160,7 +145,7 @@ const SignUp = () => {
 
         {/* Form */}
         <form
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmit(handleSubmitForm)}
           className="space-y-5"
           aria-labelledby="signup-heading"
           noValidate
@@ -176,22 +161,14 @@ const SignUp = () => {
 
             <input
               id="user_Email"
-              name="email"
               type="email"
-              value={user_email}
               placeholder="you@example.com"
               autoComplete="email"
-              required
+              {...register("email")}
               aria-invalid={errors.email ? "true" : "false"}
-              aria-describedby={errors.email ? "email-error" : undefined}
-              onChange={(e) => {
-                setUser_Email(e.target.value);
-
-                setErrors({
-                  ...errors,
-                  email: "",
-                });
-              }}
+              aria-describedby={
+                errors.email ? "email-error" : undefined
+              }
               className={`w-full rounded-xl border ${
                 errors.email ? "border-red-700" : "border-gray-300"
               } px-4 py-3 outline-none transition focus:border-black focus:ring-2 focus:ring-black/10`}
@@ -203,7 +180,7 @@ const SignUp = () => {
                 role="alert"
                 className="mt-2 text-sm text-red-700"
               >
-                {errors.email}
+                {errors.email.message}
               </p>
             )}
           </div>
@@ -217,48 +194,43 @@ const SignUp = () => {
               Password
             </label>
 
-           <div>
-             <input
-              id="user_Password"
-              name="password"
-              value={user_password}
-              type={type}
-              placeholder="Enter your password"
-              autoComplete="new-password"
-              required
-              aria-invalid={errors.password ? "true" : "false"}
-              aria-describedby={errors.password ? "password-error" : undefined}
-              onChange={(e) => {
-                setUser_Password(e.target.value);
-
-                setErrors({
-                  ...errors,
-                  password: "",
-                });
-              }}
-              className={`w-full rounded-xl border ${
-                errors.password ? "border-red-700" : "border-gray-300"
-              } px-4 py-3 outline-none transition focus:border-black focus:ring-2 focus:ring-black/10`}
-            />
-             <div className="flex justify-end right-10 relative bottom-10">
-              {" "}
-              <button onClick={handleToggle}>
-                <Icon className="absolute mr-10" size={25} />
-              </button>
-            </div>
-           </div>
-       
             <div>
-              {errors.password && (
-                <p
-                  id="password-error"
-                  role="alert"
-                  className="mt-2 text-sm text-red-700"
+              <input
+                id="user_Password"
+                type={type}
+                placeholder="Enter your password"
+                autoComplete="new-password"
+                {...register("password")}
+                aria-invalid={errors.password ? "true" : "false"}
+                aria-describedby={
+                  errors.password ? "password-error" : undefined
+                }
+                className={`w-full rounded-xl border ${
+                  errors.password
+                    ? "border-red-700"
+                    : "border-gray-300"
+                } px-4 py-3 outline-none transition focus:border-black focus:ring-2 focus:ring-black/10`}
+              />
+
+              <div className="flex justify-end right-10 relative bottom-10">
+                <button
+                  type="button"
+                  onClick={handleToggle}
                 >
-                  {errors.password}
-                </p>
-              )}
+                  <Icon className="absolute mr-10" size={25} />
+                </button>
+              </div>
             </div>
+
+            {errors.password && (
+              <p
+                id="password-error"
+                role="alert"
+                className="mt-2 text-sm text-red-700"
+              >
+                {errors.password.message}
+              </p>
+            )}
           </div>
 
           {/* Submit */}
@@ -289,3 +261,4 @@ const SignUp = () => {
 };
 
 export default SignUp;
+
