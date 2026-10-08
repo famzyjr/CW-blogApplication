@@ -2,7 +2,7 @@ import React from "react";
 import BlogList from "./BlogList";
 import useFetch from "../../hooks/useFetch";
 
-const endpoint = "https://cw-blog-backend.onrender.com";
+const endpoint = "https://blogapi-5lsj.onrender.com";
 
 const Home = () => {
   const { data: blogs, ispending, error } = useFetch(`${endpoint}/api/blogs`);

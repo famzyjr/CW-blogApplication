@@ -92,12 +92,12 @@ const BlogList = ({ blog = [], title, loading }) => {
                     className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-black text-white font-semibold text-lg"
                     aria-hidden="true"
                   >
-                    {blogs.author_name.charAt(0).toUpperCase()}
+                    {blogs.author.charAt(0).toUpperCase()}
                   </div>
 
                   <div>
                     <h4 className="font-semibold text-gray-900 capitalize text-sm sm:text-base">
-                      {blogs.author_name}
+                      {blogs.author}
                     </h4>
 
                     <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-500 mt-1">
@@ -153,7 +153,7 @@ const BlogList = ({ blog = [], title, loading }) => {
 
                   {/* Read More */}
                   <Link
-                    to={`/blogs/${blogs.id}`}
+                    to={`/blogs/${blogs._id}`}
                     aria-label={`Read more about ${blogs.title}`}
                     className="rounded-full bg-black text-white px-5 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-medium transition hover:bg-gray-800"
                   >

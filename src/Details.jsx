@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast, Toaster } from "react-hot-toast";
 import MDEditor from "@uiw/react-md-editor";
@@ -15,8 +15,9 @@ function Details() {
 
   const { id } = useParams();
   const navigate = useNavigate();
+ 
+  const endpoint = "https://blogapi-5lsj.onrender.com";
 
-  const endpoint = "https://cw-blog-backend.onrender.com";
 
   const {
     data: blogs,
@@ -187,12 +188,12 @@ function Details() {
                         aria-hidden="true"
                         className="w-12 h-12 rounded-full bg-black text-white flex items-center justify-center font-bold text-lg"
                       >
-                        {blogs.author_name.charAt(0).toUpperCase()}
+                        {blogs.author.charAt(0).toUpperCase()}
                       </div>
 
                       <div>
                         <p className="font-semibold text-gray-900">
-                          {blogs.author_name}
+                          {blogs.author}
                         </p>
 
                         <p className="text-sm text-gray-500">

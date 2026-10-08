@@ -6,7 +6,7 @@ import MarkdownEditor from "@uiw/react-markdown-editor";
 const CreateBlogs = () => {
   const [title, setTitle] = useState("");
   const [content, setcontent] = useState("");
-  const [author_name, setauthor_name] = useState("");
+  const [author, setauthor_name] = useState("");
   const [isPending, setisPending] = useState(false);
 
   const navigate = useNavigate();
@@ -16,13 +16,14 @@ const CreateBlogs = () => {
 
     const blog = {
       title,
-      author_name,
+      author,
       content,
     };
 
     setisPending(true);
 
-    const endpoint = "https://cw-blog-backend.onrender.com";
+const endpoint = "https://blogapi-5lsj.onrender.com";
+   
 
     fetch(`${endpoint}/api/blogs`, {
       method: "POST",
@@ -129,7 +130,7 @@ const CreateBlogs = () => {
                 type="text"
                 id="blog-author"
                 name="author"
-                value={author_name}
+                value={author}
                 required
                 onChange={(e) => setauthor_name(e.target.value)}
                 placeholder="Your name..."
