@@ -1,10 +1,11 @@
-import React, { useState,useEffect } from "react";
+
+import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast, Toaster } from "react-hot-toast";
 import MDEditor from "@uiw/react-md-editor";
 import useFetch from "../hooks/useFetch";
-import remarkGfm from "remark-gfm";
 import DetailsSkeleton from "./components/Skeletons/DetailsSkeleton";
+import BlogContentEditor from "./components/BlogContentEditor";
 
 function Details() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -15,9 +16,8 @@ function Details() {
 
   const { id } = useParams();
   const navigate = useNavigate();
- 
-  const endpoint = "https://blogapi-5lsj.onrender.com";
 
+  const endpoint = "https://blogapi-5lsj.onrender.com";
 
   const {
     data: blogs,
@@ -132,10 +132,7 @@ function Details() {
     <>
       <Toaster position="bottom-right" />
 
-      <main
-        className="blog-preview"
-        aria-label="Blog details"
-      >
+      <main className="blog-preview" aria-label="Blog details">
         {/* Loading */}
         {ispending && (
           <div
@@ -149,10 +146,7 @@ function Details() {
 
         {/* Error */}
         {error && (
-          <div
-            role="alert"
-            className="errors"
-          >
+          <div role="alert" className="errors">
             {error}
           </div>
         )}
@@ -180,7 +174,7 @@ function Details() {
                     {blogs.title}
                   </h1>
 
-                  {/* Author information */}
+                  {/* Author Information */}
                   <div className="mt-6 flex items-center justify-between flex-wrap gap-5">
                     <div className="flex items-center gap-4">
                       {/* Avatar */}
@@ -203,10 +197,7 @@ function Details() {
                     </div>
 
                     {/* Blog Actions */}
-                    <div
-                      className="flex gap-3"
-                      aria-label="Blog actions"
-                    >
+                    <div className="flex gap-3" aria-label="Blog actions">
                       <button
                         type="button"
                         onClick={handleEdit}
@@ -259,29 +250,15 @@ function Details() {
                   </div>
 
                   {/* Markdown Editor */}
-                  <div>
-                    <label
-                      htmlFor="blog-content-editor"
-                      className="block mb-2 text-sm font-semibold text-gray-700"
-                    >
+                  <div className="space-y-2">
+                    <label className="block text-sm font-semibold text-gray-700">
                       Blog Content
                     </label>
 
-                    <div
-                      id="blog-content-editor"
-                      data-color-mode="light"
-                      className="mx-auto max-w-5xl rounded-2xl bg-white shadow-xl border border-gray-200 overflow-hidden"
-                    >
-                      <MDEditor
-                        value={content}
-                        onChange={(value) => setContent(value || "")}
-                        height={600}
-                        preview="edit"
-                        previewOptions={{
-                          remarkPlugins: [remarkGfm],
-                        }}
-                      />
-                    </div>
+                    <BlogContentEditor
+                      content={content}
+                      setContent={setContent}
+                    />
                   </div>
 
                   {/* Edit Actions */}
@@ -290,7 +267,6 @@ function Details() {
                       type="button"
                       onClick={SaveBlog}
                       disabled={isPending}
-                      
                       aria-busy={isPending}
                       className={`px-7 py-3 rounded-xl bg-black text-white transition focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 ${
                         isPending
@@ -320,10 +296,7 @@ function Details() {
 
             {/* Delete Confirmation Modal */}
             {isModalOpen && (
-              <div
-                className="modal-overlay"
-                role="presentation"
-              >
+              <div className="modal-overlay" role="presentation">
                 <div
                   className="delete-modal"
                   role="dialog"
@@ -332,17 +305,13 @@ function Details() {
                   aria-describedby="delete-blog-description"
                 >
                   <div className="modal-content">
-                    <h2 id="delete-blog-title">
-                      Delete Blog?
-                    </h2>
+                    <h2 id="delete-blog-title">Delete Blog?</h2>
 
                     <p id="delete-blog-description">
                       Are you sure you want to delete this blog post?
                     </p>
 
-                    <span>
-                      This action cannot be undone.
-                    </span>
+                    <span>This action cannot be undone.</span>
 
                     <div className="modal-footer">
                       <button
@@ -372,10 +341,7 @@ function Details() {
                 aria-labelledby="blog-content-heading"
                 className="p-8"
               >
-                <h2
-                  id="blog-content-heading"
-                  className="sr-only"
-                >
+                <h2 id="blog-content-heading" className="sr-only">
                   Blog content
                 </h2>
 
@@ -393,9 +359,7 @@ function Details() {
                     prose-code:text-blue-600
                   "
                 >
-                  <MDEditor.Markdown
-                    source={blogs.content}
-                  />
+                  <MDEditor.Markdown source={blogs.content || ""} />
                 </div>
               </section>
             )}
@@ -407,3 +371,4 @@ function Details() {
 }
 
 export default Details;
+

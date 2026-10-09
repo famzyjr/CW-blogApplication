@@ -10,6 +10,7 @@ import ProtectedRoutes from "./components/ProtectedRoutes";
 import Footer from "./components/Footer";
 import SignUp from "./pages/SignUp";
 import Bookmarked from "./pages/Bookmarked";
+import nnnn from "./nnnn";
 function App() {
   return (
     <BrowserRouter>
@@ -33,6 +34,7 @@ function App() {
           element={
             <ProtectedRoutes>
               <Details />
+             
             </ProtectedRoutes>
           }
         />

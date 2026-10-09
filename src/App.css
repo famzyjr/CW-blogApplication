@@ -1,21 +1,27 @@
+
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap");
-@import '../node_modules/@syncfusion/ej2-tailwind3-theme/styles/rich-text-editor/index.css';
+@import "../node_modules/@syncfusion/ej2-tailwind3-theme/styles/rich-text-editor/index.css";
+
 * {
   --primary-color: #000;
   --text: #fff;
+  box-sizing: border-box;
 }
+
 body {
-  /* color: red; */
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
   font-family: "Quicksand", sans-serif;
 }
+
+/* =========================
+   NAVIGATION
+========================= */
+
 nav {
   max-width: 1200px;
   margin: 0 auto;
   padding: 1.2rem 2rem;
-
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -33,7 +39,6 @@ nav ul {
   display: flex;
   align-items: center;
   gap: 2rem;
-
   list-style: none;
   margin: 0;
   padding: 0;
@@ -54,10 +59,10 @@ nav a {
 nav a:hover {
   color: #666;
 }
-.icon-container {
-  position: relative;
-  display: inline-block;
-}
+
+/* =========================
+   PROFILE MENU
+========================= */
 
 .icon-container {
   position: relative;
@@ -69,23 +74,19 @@ nav a:hover {
   position: absolute;
   top: 45px;
   right: 0;
-
   width: 150px;
   padding: 12px;
-
   background: white;
   border-radius: 10px;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
-
   display: flex;
   flex-direction: column;
   gap: 12px;
-
   opacity: 0;
   visibility: hidden;
   transform: translateY(-5px);
-
   transition: all 0.2s ease;
+  z-index: 100;
 }
 
 .icon-container:hover .profile-menu {
@@ -104,6 +105,7 @@ nav a:hover {
   background: #f2f2f2;
   border-radius: 6px;
 }
+
 .nav-link {
   position: relative;
 }
@@ -113,12 +115,9 @@ nav a:hover {
   position: absolute;
   left: 0;
   bottom: -6px;
-
   width: 0;
   height: 2px;
-
   background: var(--primary-color);
-
   transition: width 0.3s ease;
 }
 
@@ -126,19 +125,18 @@ nav a:hover {
   width: 100%;
 }
 
-/* CTA */
+/* =========================
+   CREATE BUTTON
+========================= */
 
 .create-btn {
   display: inline-flex;
   justify-content: center;
   align-items: center;
-
   min-width: 170px;
   padding: 0.85rem 1.8rem;
-
   border: 2px solid var(--primary-color);
   border-radius: 999px;
-
   transition: all 0.3s ease;
 }
 
@@ -148,33 +146,9 @@ nav a:hover {
   transform: translateY(-2px);
 }
 
-.w-md-editor {
-  border-radius: 18px !important;
-  overflow: hidden;
-  border: 1px solid #e5e7eb !important;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-}
-
-.w-md-editor-toolbar {
-  background: #fff !important;
-  border-bottom: 1px solid #e5e7eb !important;
-  padding: 10px;
-}
-
-.w-md-editor-text-textarea,
-.w-md-editor-text-input,
-.w-md-editor-text {
-  font-size: 18px !important;
-  line-height: 1.9 !important;
-  padding: 24px !important;
-}
-
-.w-md-editor-text-pre,
-.w-md-editor-text-input {
-  font-family: Inter, sans-serif !important;
-}
-
-
+/* =========================
+   GENERAL CONTENT
+========================= */
 
 .content {
   max-width: 600px;
@@ -182,42 +156,49 @@ nav a:hover {
   padding: 20px;
 }
 
-/* blog preview  */
-.blog-preview {
-  padding: 10px 16px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+/* =========================
+   BLOG DETAILS
+========================= */
 
+.blog-preview {
+  width: 100%;
+  padding: 10px 16px;
   border-bottom: 1px solid #fafafa;
 }
 
+/* Avoid hover shadows on the entire details page */
 .blog-preview:hover {
-  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: none;
 }
 
 .blog-preview a {
   text-decoration: none;
 }
 
+/* Keep heading styles limited */
 .blog-preview h2 {
-  font-size: 20px;
   color: var(--primary-color);
-  margin-bottom: 8px;
 }
+
+/*
+  IMPORTANT:
+  Do not apply broad margins, padding, font sizes,
+  or line heights to every div inside the editor.
+  The Markdown editor has its own internal layout.
+*/
 
 .blog-preview div {
-  margin: 20px 0;
+  margin: 0;
 }
 
-.blog-preview button {
-  background: var(--primary-color);
-  color: #fff;
-  border: 0;
-  padding: 8px;
-  border-radius: 8px;
+/* Blog action buttons only */
+.blog-preview > article > div button {
   cursor: pointer;
 }
+
+/* =========================
+   LOADING AND ERRORS
+========================= */
 
 .loading_state,
 .errors {
@@ -226,12 +207,15 @@ nav a:hover {
   align-items: center;
   margin-top: 220px;
 }
+
 .errors {
   font-weight: 900;
   font-size: 1.5rem;
 }
 
-
+/* =========================
+   WELCOME PAGE
+========================= */
 
 .welcome {
   min-height: 100vh;
@@ -294,6 +278,10 @@ nav a:hover {
   color: #fff;
 }
 
+/* =========================
+   FEATURE CARDS
+========================= */
+
 .features {
   margin-top: 5rem;
   display: grid;
@@ -326,39 +314,34 @@ nav a:hover {
   line-height: 1.6;
 }
 
-/* Overlay */
+/* =========================
+   DELETE MODAL OVERLAY
+========================= */
 
 .modal-overlay {
   position: fixed;
   inset: 0;
-top: -20px;
-  width: 100vw;
-  height: 100vh;
- 
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-
   background: rgba(0, 0, 0, 0.45);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
-
   z-index: 9999;
 }
 
-/* Modal */
+/* =========================
+   DELETE MODAL
+========================= */
 
 .delete-modal {
   width: min(90%, 420px);
-
   background: #fff;
-
   border-radius: 18px;
-
   overflow: hidden;
-
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
-
   animation: modalPop 0.25s ease;
 }
 
@@ -374,7 +357,9 @@ top: -20px;
   }
 }
 
-/* Body */
+/* =========================
+   MODAL CONTENT
+========================= */
 
 .modal-content {
   padding: 28px;
@@ -397,33 +382,30 @@ top: -20px;
   font-size: 0.95rem;
 }
 
-/* Footer */
+/* =========================
+   MODAL FOOTER
+========================= */
 
 .modal-footer {
   display: flex;
   justify-content: flex-end;
   gap: 12px;
-
   padding: 18px 24px;
-
   background: #fafafa;
-
   border-top: 1px solid #eee;
 }
 
-/* Buttons */
+/* =========================
+   MODAL BUTTONS
+========================= */
 
 .cancel-btn,
 .delete-btn {
   border: none;
   cursor: pointer;
-
   padding: 11px 22px;
-
   border-radius: 10px;
-
   font-weight: 600;
-
   transition: 0.25s ease;
 }
 
@@ -446,7 +428,10 @@ top: -20px;
   background: #dc2626;
 }
 
-/* Large Desktop */
+/* =========================
+   LARGE DESKTOP
+========================= */
+
 @media (min-width: 1400px) {
   .blog-list {
     grid-template-columns: repeat(3, 1fr);
@@ -454,7 +439,10 @@ top: -20px;
   }
 }
 
-/* Laptop */
+/* =========================
+   LAPTOP
+========================= */
+
 @media (max-width: 1200px) {
   .blog-list {
     grid-template-columns: repeat(2, minmax(300px, 1fr));
@@ -462,7 +450,10 @@ top: -20px;
   }
 }
 
-/* Tablet */
+/* =========================
+   TABLET
+========================= */
+
 @media (max-width: 768px) {
   .blog-list {
     grid-template-columns: 1fr;
@@ -481,9 +472,62 @@ top: -20px;
   .card p {
     font-size: 1rem;
   }
+
+  .welcome-content h1 {
+    font-size: 2.7rem;
+  }
+
+  .welcome-content p {
+    font-size: 1rem;
+  }
+
+  nav {
+    padding: 1rem 1.5rem;
+  }
+
+  nav h2 {
+    font-size: 1.7rem;
+  }
+
+  nav ul {
+    gap: 1rem;
+  }
+
+  .create-btn {
+    min-width: 150px;
+    padding: 0.75rem 1.4rem;
+  }
 }
 
-/* Mobile */
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 576px) {
+  nav {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  nav h2 {
+    align-self: flex-start;
+  }
+
+  nav ul {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  nav a {
+    font-size: 0.95rem;
+  }
+
+  .create-btn {
+    min-width: 135px;
+    padding: 0.7rem 1rem;
+  }
+}
+
 @media (max-width: 480px) {
   .blog-list {
     margin: 2.5rem auto;
@@ -513,56 +557,3 @@ top: -20px;
   }
 }
 
-/* Mobile */
-
-@media (max-width: 768px) {
-  .welcome-content h1 {
-    font-size: 2.7rem;
-  }
-
-  .welcome-content p {
-    font-size: 1rem;
-  }
-}
-@media (max-width: 768px) {
-  nav {
-    padding: 1rem 1.5rem;
-  }
-
-  nav h2 {
-    font-size: 1.7rem;
-  }
-
-  nav ul {
-    gap: 1rem;
-  }
-
-  .create-btn {
-    min-width: 150px;
-    padding: 0.75rem 1.4rem;
-  }
-}
-@media (max-width: 576px) {
-  nav {
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
-  nav h2 {
-    align-self: flex-start;
-  }
-
-  nav ul {
-    width: 100%;
-    justify-content: space-between;
-  }
-
-  nav a {
-    font-size: 0.95rem;
-  }
-
-  .create-btn {
-    min-width: 135px;
-    padding: 0.7rem 1rem;
-  }
-}
