@@ -219,7 +219,7 @@ function Details() {
               ) : (
                 /* Edit Mode */
                 <div
-                  className="space-y-6"
+                  className="space-y-6 flex flex-col gap-5"
                   aria-labelledby="edit-blog-heading"
                 >
                   <h2
@@ -262,7 +262,7 @@ function Details() {
                   </div>
 
                   {/* Edit Actions */}
-                  <div className="flex gap-4">
+                  <div className="flex gap-4 ">
                     <button
                       type="button"
                       onClick={SaveBlog}
